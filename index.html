@@ -1,0 +1,2838 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0019BC">
+<title>Bolívar 360</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   DESIGN TOKENS — Bolívar 360
+   Paleta oficial: Navy #0019BC · Sky #00BCF2 · Gold #F2B701
+   Ember #F24135 · Black #000000 · Off-white #F7F7F7
+   ================================================================ */
+:root {
+  --navy:        #0019BC;
+  --navy-dark:   #0012A0;
+  --navy-deep:   #000D80;
+  --sky:         #00BCF2;
+  --gold:        #F2B701;
+  --gold-dark:   #C99500;
+  --ember:       #F24135;
+  --black:       #000000;
+  --off-white:   #F7F7F7;
+
+  --bg:          #FFFFFF;
+  --bg-2:        #F7F7F7;
+  --bg-3:        #EEEEF0;
+  --surface:     #FFFFFF;
+  --ink:         #0A0A0A;
+  --ink-2:       #4A4A52;
+  --ink-3:       #9A9AA6;
+  --border:      rgba(0,0,0,0.07);
+  --divider:     rgba(0,0,0,0.05);
+
+  --navy-tint:   rgba(0,25,188,0.07);
+  --sky-tint:    rgba(0,188,242,0.09);
+  --gold-tint:   rgba(242,183,1,0.10);
+  --ember-tint:  rgba(242,65,53,0.07);
+
+  --hero:        #0019BC;
+  --tab-surface: #FFFFFF;
+
+  --r-s:  8px;  --r-m:  12px;
+  --r-l:  16px; --r-xl: 24px; --r-p: 999px;
+
+  --elev-1: 0 1px 3px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06);
+  --elev-2: 0 4px 12px rgba(0,0,0,0.11), 0 1px 3px rgba(0,0,0,0.06);
+  --elev-3: 0 8px 28px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.06);
+
+  --t-fast:   150ms cubic-bezier(0.4,0,0.2,1);
+  --t-normal: 280ms cubic-bezier(0.4,0,0.2,1);
+  --t-slow:   400ms cubic-bezier(0.4,0,0.2,1);
+}
+
+[data-theme="dark"] {
+  --bg:          #080A18;
+  --bg-2:        #0E1028;
+  --bg-3:        #161838;
+  --surface:     #111428;
+  --ink:         #EEF0FF;
+  --ink-2:       #7B88C0;
+  --ink-3:       #3A4272;
+  --border:      rgba(0,188,242,0.08);
+  --divider:     rgba(255,255,255,0.04);
+  --navy-tint:   rgba(0,25,188,0.22);
+  --sky-tint:    rgba(0,188,242,0.13);
+  --gold-tint:   rgba(242,183,1,0.13);
+  --ember-tint:  rgba(242,65,53,0.12);
+  --hero:        #000D80;
+  --tab-surface: #0A0C1E;
+  --elev-1: 0 1px 4px rgba(0,0,0,0.35);
+  --elev-2: 0 4px 14px rgba(0,0,0,0.45);
+  --elev-3: 0 8px 30px rgba(0,0,0,0.55);
+}
+
+/* ================================================================
+   RESET
+   ================================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{height:100%;}
+body{
+  min-height:100%;
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:#111;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-font-smoothing:antialiased;
+  overscroll-behavior:none;
+}
+img{display:block;width:100%;object-fit:cover;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;outline:none;}
+input,textarea{font-family:inherit;outline:none;}
+a{color:inherit;text-decoration:none;}
+
+/* ================================================================
+   APP VIEWPORT
+   ================================================================ */
+#app{
+  position:relative;
+  width:100%;max-width:390px;
+  height:100dvh;
+  display:flex;flex-direction:column;
+  background:var(--bg);
+  overflow:hidden;
+}
+
+/* ================================================================
+   STATUS BAR
+   ================================================================ */
+.status-bar{
+  flex-shrink:0;height:28px;
+  padding:0 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background var(--t-fast);
+  position:relative;z-index:50;
+}
+.status-bar--hero{background:var(--hero);}
+.status-bar--light{background:var(--bg);}
+.status-bar--dark{background:#080A18;}
+.status-bar--trans{background:transparent;position:absolute;top:0;left:0;right:0;z-index:20;}
+
+.sb-time{font-size:11px;font-weight:700;color:#FFF;letter-spacing:0.3px;}
+.sb-icons{display:flex;align-items:center;gap:5px;}
+.sb-battery-body{width:17px;height:9px;border:1.5px solid rgba(255,255,255,0.75);border-radius:2px;position:relative;padding:1.5px;}
+.sb-battery-body::after{content:'';position:absolute;right:-4px;top:50%;transform:translateY(-50%);width:2px;height:5px;background:rgba(255,255,255,0.6);border-radius:0 1px 1px 0;}
+.sb-battery-fill{height:100%;background:rgba(255,255,255,0.85);border-radius:1px;width:65%;}
+.status-bar--light .sb-time{color:var(--ink);}
+.status-bar--light .sb-battery-body{border-color:rgba(0,0,0,0.45);}
+.status-bar--light .sb-battery-body::after{background:rgba(0,0,0,0.4);}
+.status-bar--light .sb-battery-fill{background:rgba(0,0,0,0.5);}
+
+/* ================================================================
+   SCREENS CONTAINER
+   ================================================================ */
+.screens{flex:1;position:relative;overflow:hidden;}
+.screen{
+  position:absolute;inset:0;
+  overflow-y:auto;overflow-x:hidden;
+  scrollbar-width:none;
+  background:var(--bg);
+  will-change:transform;
+  transform:translateX(100%);
+  transition:transform var(--t-normal);
+}
+.screen::-webkit-scrollbar{display:none;}
+.screen.active{transform:translateX(0);}
+.screen.leaving{transform:translateX(-28%);}
+
+/* ================================================================
+   BOTTOM TAB BAR
+   ================================================================ */
+.tab-bar{
+  flex-shrink:0;height:62px;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  background:var(--tab-surface);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;
+  z-index:30;
+  box-shadow:0 -1px 0 var(--border);
+}
+.tab-item{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:3px;height:100%;
+  position:relative;overflow:hidden;
+  transition:all var(--t-fast);
+}
+.tab-item svg{
+  width:22px;height:22px;
+  stroke:var(--ink-3);fill:none;
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;
+  transition:stroke var(--t-fast),transform var(--t-fast);
+}
+.tab-item span{
+  font-size:10px;font-weight:600;
+  color:var(--ink-3);
+  transition:color var(--t-fast);
+}
+.tab-item.active svg{stroke:var(--navy);}
+.tab-item.active span{color:var(--navy);}
+[data-theme="dark"] .tab-item.active svg{stroke:var(--sky);}
+[data-theme="dark"] .tab-item.active span{color:var(--sky);}
+.tab-item::before{
+  content:'';position:absolute;top:5px;
+  width:0;height:3px;
+  background:var(--navy);border-radius:var(--r-p);
+  transition:width var(--t-normal),opacity var(--t-normal);
+  opacity:0;
+}
+.tab-item.active::before{width:28px;opacity:1;}
+[data-theme="dark"] .tab-item::before{background:var(--sky);}
+
+/* ================================================================
+   TOAST
+   ================================================================ */
+.toast{
+  position:fixed;bottom:76px;left:50%;
+  transform:translateX(-50%) translateY(14px);
+  width:calc(100% - 36px);max-width:354px;
+  background:#141628;
+  border-radius:var(--r-l);
+  padding:14px 16px;
+  display:flex;align-items:center;gap:10px;
+  z-index:9999;opacity:0;pointer-events:none;
+  transition:opacity 220ms ease,transform 220ms ease;
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .toast{background:#1E2240;border:1px solid var(--border);}
+.toast.visible{opacity:1;transform:translateX(-50%) translateY(0);}
+.t-icon{font-size:17px;flex-shrink:0;}
+.t-text{flex:1;font-size:13px;font-weight:600;color:#FFF;line-height:1.3;}
+.t-pts{font-size:13px;font-weight:700;color:var(--gold);flex-shrink:0;}
+
+/* ================================================================
+   DARK MODE TOGGLE
+   ================================================================ */
+.dm-btn{
+  position:fixed;top:6px;right:10px;
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(0,0,0,0.2);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;z-index:200;
+  transition:background var(--t-fast),transform var(--t-fast);
+}
+.dm-btn:active{transform:scale(0.88);}
+
+/* ================================================================
+   RIPPLE
+   ================================================================ */
+.ripple-wrap{position:relative;overflow:hidden;}
+@keyframes ripple-anim{from{transform:scale(0);opacity:0.2;}to{transform:scale(2.5);opacity:0;}}
+.ripple-circle{
+  position:absolute;border-radius:50%;
+  background:currentColor;pointer-events:none;
+  animation:ripple-anim 500ms ease-out forwards;
+  transform-origin:center;
+}
+
+/* ================================================================
+   ONBOARDING OVERLAY
+   ================================================================ */
+#ob-overlay{
+  position:fixed;inset:0;z-index:1000;
+  width:100%;max-width:390px;
+  left:50%;transform:translateX(-50%);
+}
+#ob-overlay.gone{display:none;}
+
+.ob-step{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity 300ms ease,transform 300ms ease;
+  transform:translateX(30px);
+}
+.ob-step.ob-active{opacity:1;pointer-events:all;transform:translateX(0);}
+.ob-step.ob-leaving{opacity:0;transform:translateX(-30px);}
+
+/* --- SPLASH --- */
+#ob-splash{
+  background:var(--navy);
+  align-items:center;justify-content:center;
+  gap:0;
+}
+.splash-glow{
+  position:absolute;
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(0,188,242,0.18) 0%,transparent 70%);
+  border-radius:50%;
+  animation:splash-pulse 3s ease-in-out infinite;
+}
+@keyframes splash-pulse{0%,100%{transform:scale(1);opacity:0.7;}50%{transform:scale(1.15);opacity:1;}}
+.splash-logo-wrap{
+  position:relative;z-index:2;
+  width:240px;
+  animation:splash-logo-in 800ms cubic-bezier(0.22,1,0.36,1) forwards;
+  opacity:0;
+}
+@keyframes splash-logo-in{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.splash-tagline{
+  position:relative;z-index:2;
+  margin-top:20px;
+  font-size:13px;font-weight:500;
+  color:rgba(255,255,255,0.6);
+  letter-spacing:0.5px;
+  text-align:center;
+  animation:splash-tagline-in 800ms 300ms cubic-bezier(0.22,1,0.36,1) forwards;
+  opacity:0;
+}
+@keyframes splash-tagline-in{from{opacity:0;transform:translateY(8px);}to{opacity:0.6;transform:translateY(0);}}
+.splash-indicator{
+  position:absolute;bottom:48px;left:50%;transform:translateX(-50%);
+  z-index:2;
+  display:flex;align-items:center;gap:8px;
+  animation:splash-fade-in 800ms 600ms ease forwards;opacity:0;
+}
+@keyframes splash-fade-in{to{opacity:1;}}
+.splash-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.35);}
+.splash-dot.a{width:20px;border-radius:var(--r-p);background:rgba(255,255,255,0.75);}
+.splash-tap{
+  position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+  font-size:11px;color:rgba(255,255,255,0.35);
+  z-index:2;
+  animation:splash-fade-in 800ms 900ms ease forwards;opacity:0;
+}
+
+/* --- SLIDES --- */
+#ob-slides{background:#0A0C1E;overflow:hidden;}
+.slides-track{
+  display:flex;
+  width:300%;
+  transition:transform var(--t-normal);
+}
+.slide{
+  width:calc(100%/3);
+  min-height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;
+  padding:60px 32px 0;
+}
+.slide-illus{
+  width:220px;height:180px;
+  position:relative;flex-shrink:0;
+  margin-bottom:32px;
+}
+.slide-num{
+  font-size:11px;font-weight:700;
+  color:rgba(255,255,255,0.3);letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:12px;
+}
+.slide-title{
+  font-size:30px;font-weight:800;
+  color:#FFFFFF;line-height:1.1;
+  letter-spacing:-0.5px;margin-bottom:12px;
+  text-align:center;
+}
+.slide-body{
+  font-size:15px;font-weight:400;
+  color:rgba(255,255,255,0.55);
+  line-height:1.65;text-align:center;
+}
+
+.slides-footer{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:20px 28px calc(32px + env(safe-area-inset-bottom,0px));
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(to bottom,transparent,#0A0C1E 50%);
+}
+.slides-dots{display:flex;gap:6px;}
+.s-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.25);
+  transition:all var(--t-normal);
+}
+.s-dot.active{width:20px;border-radius:var(--r-p);background:#FFFFFF;}
+
+.slide-prev-btn,.slide-next-btn{
+  width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transition:all var(--t-fast);
+}
+.slide-prev-btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);}
+.slide-prev-btn svg,.slide-next-btn svg{width:18px;height:18px;stroke:#FFF;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.slide-next-btn{background:#FFFFFF;}
+.slide-next-btn svg{stroke:#0019BC;}
+.slide-next-btn.last-slide{background:var(--gold);}
+.slide-next-btn.last-slide svg{stroke:#000;}
+.slide-prev-btn:active{transform:scale(0.92);}
+.slide-prev-btn.ob-hidden{visibility:hidden;pointer-events:none;}
+.slide-next-btn:active{transform:scale(0.92);}
+
+/* --- PROFILE SELECT --- */
+#ob-profile{background:#FFFFFF;}
+[data-theme="dark"] #ob-profile{background:var(--bg);}
+.ob-profile-hero{
+  background:var(--navy);
+  padding:52px 28px 40px;
+}
+.ob-logo-sm{display:flex;align-items:baseline;gap:4px;margin-bottom:28px;max-width:180px;}
+.ob-logo-sm-w{font-family:'Inter',system-ui,sans-serif;font-size:20px;font-weight:900;color:#FFF;letter-spacing:-0.5px;text-transform:uppercase;line-height:1;}
+.ob-logo-sm-n{font-family:'Inter',system-ui,sans-serif;font-size:28px;font-weight:900;color:#FFF;line-height:0.9;letter-spacing:-1px;}
+.ob-profile-hero-title{
+  font-size:26px;font-weight:800;
+  color:#FFF;line-height:1.2;letter-spacing:-0.4px;
+}
+.ob-profile-hero-sub{
+  font-size:14px;color:rgba(255,255,255,0.6);
+  margin-top:8px;line-height:1.5;
+}
+.ob-profile-cards{padding:28px 20px;}
+.ob-profile-card{
+  border:2px solid var(--border);
+  border-radius:var(--r-xl);
+  padding:22px 20px;
+  margin-bottom:14px;
+  cursor:pointer;
+  display:flex;align-items:center;gap:16px;
+  transition:all var(--t-fast);
+  position:relative;overflow:hidden;
+}
+.ob-profile-card:active{transform:scale(0.98);}
+.ob-profile-card.selected{border-color:var(--navy);background:var(--navy-tint);}
+[data-theme="dark"] .ob-profile-card.selected{border-color:var(--sky);background:var(--sky-tint);}
+.ob-profile-card-icon{
+  width:52px;height:52px;border-radius:var(--r-l);
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+}
+.ob-profile-card-icon.visitante{background:var(--sky-tint);}
+.ob-profile-card-icon.local{background:var(--gold-tint);}
+.ob-profile-card-title{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.ob-profile-card-sub{font-size:13px;color:var(--ink-3);}
+.ob-profile-card-check{
+  position:absolute;top:14px;right:14px;
+  width:22px;height:22px;border-radius:50%;
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  transition:all var(--t-fast);
+}
+.ob-profile-card.selected .ob-profile-card-check{
+  background:var(--navy);border-color:var(--navy);
+}
+[data-theme="dark"] .ob-profile-card.selected .ob-profile-card-check{background:var(--sky);border-color:var(--sky);}
+.ob-profile-card-check svg{width:11px;height:11px;stroke:#FFF;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity var(--t-fast);}
+.ob-profile-card.selected .ob-profile-card-check svg{opacity:1;}
+
+.ob-cta{
+  margin:0 20px 32px;
+  background:var(--navy);color:#FFF;
+  border:none;border-radius:var(--r-p);
+  padding:16px;font-size:15px;font-weight:700;
+  cursor:pointer;width:calc(100% - 40px);
+  transition:all var(--t-fast);
+  position:relative;overflow:hidden;
+}
+.ob-cta:active{transform:scale(0.98);background:var(--navy-dark);}
+[data-theme="dark"] .ob-cta{background:var(--sky);color:var(--bg);}
+
+/* --- PERMISOS --- */
+#ob-permisos{background:var(--bg);}
+.ob-permisos-hero{
+  background:var(--navy);
+  padding:52px 28px 44px;
+  text-align:center;
+}
+.ob-perm-icon{
+  width:72px;height:72px;border-radius:50%;
+  background:rgba(255,255,255,0.12);
+  margin:0 auto 20px;
+  display:flex;align-items:center;justify-content:center;
+}
+.ob-perm-icon svg{width:32px;height:32px;stroke:#FFF;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.ob-permisos-title{font-size:24px;font-weight:800;color:#FFF;letter-spacing:-0.4px;margin-bottom:10px;}
+.ob-permisos-sub{font-size:14px;color:rgba(255,255,255,0.6);line-height:1.65;}
+
+.ob-perm-items{padding:24px 20px;}
+.ob-perm-item{
+  display:flex;align-items:center;gap:16px;
+  padding:18px 16px;
+  border-radius:var(--r-l);
+  border:1px solid var(--border);
+  margin-bottom:12px;
+  background:var(--surface);
+  box-shadow:var(--elev-1);
+}
+.ob-perm-item-icon{
+  width:44px;height:44px;border-radius:var(--r-m);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.ob-perm-item-icon.loc{background:var(--navy-tint);}
+.ob-perm-item-icon.notif{background:var(--gold-tint);}
+.ob-perm-item-icon svg{width:20px;height:20px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.ob-perm-item-icon.loc svg{stroke:var(--navy);}
+[data-theme="dark"] .ob-perm-item-icon.loc svg{stroke:var(--sky);}
+.ob-perm-item-icon.notif svg{stroke:var(--gold-dark);}
+.ob-perm-item-title{font-size:15px;font-weight:700;color:var(--ink);}
+.ob-perm-item-sub{font-size:12px;color:var(--ink-3);margin-top:2px;}
+
+/* --- GAMIFICATION INTRO --- */
+#ob-gamif{background:#0A0C1E;}
+.ob-gamif-content{
+  flex:1;padding:52px 28px 16px;
+  display:flex;flex-direction:column;
+  align-items:center;
+}
+.ob-gamif-badge{
+  width:88px;height:88px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),#FFA500);
+  display:flex;align-items:center;justify-content:center;
+  font-size:40px;
+  margin-bottom:24px;
+  box-shadow:0 0 40px rgba(242,183,1,0.4);
+  animation:gamif-pulse 2s ease-in-out infinite;
+}
+@keyframes gamif-pulse{0%,100%{box-shadow:0 0 30px rgba(242,183,1,0.3);}50%{box-shadow:0 0 50px rgba(242,183,1,0.6);}}
+.ob-gamif-title{
+  font-size:28px;font-weight:800;color:#FFF;
+  text-align:center;letter-spacing:-0.4px;
+  margin-bottom:10px;
+}
+.ob-gamif-sub{
+  font-size:15px;color:rgba(255,255,255,0.5);
+  text-align:center;line-height:1.6;margin-bottom:32px;
+}
+.ob-gamif-list{width:100%;margin-bottom:24px;}
+.ob-gamif-item{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;
+  border-radius:var(--r-l);
+  border:1px solid rgba(255,255,255,0.07);
+  margin-bottom:10px;
+  background:rgba(255,255,255,0.04);
+}
+.ob-gamif-item-dot{
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.ob-gamif-item-text{font-size:14px;font-weight:600;color:rgba(255,255,255,0.8);}
+.ob-gamif-btns{
+  padding:0 20px calc(36px + env(safe-area-inset-bottom,0px));
+  display:flex;flex-direction:column;gap:10px;width:100%;
+}
+.ob-btn-primary{
+  background:var(--gold);color:#000;
+  border:none;border-radius:var(--r-p);
+  padding:16px;font-size:15px;font-weight:700;
+  cursor:pointer;transition:all var(--t-fast);
+}
+.ob-btn-primary:active{transform:scale(0.98);}
+.ob-btn-ghost{
+  background:transparent;
+  border:none;border-radius:var(--r-p);
+  padding:12px;font-size:13px;font-weight:600;
+  color:rgba(255,255,255,0.35);cursor:pointer;
+  transition:all var(--t-fast);
+}
+
+/* ================================================================
+   SECTION / SHARED
+   ================================================================ */
+.section{padding:22px 20px 0;}
+.section-end{padding:22px 20px 28px;}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.section-title{font-size:18px;font-weight:700;color:var(--ink);letter-spacing:-0.25px;}
+.section-link{font-size:13px;font-weight:600;color:var(--navy);}
+[data-theme="dark"] .section-link{color:var(--sky);}
+
+.pb-safe{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 80px);}
+
+/* ================================================================
+   HERO (HOME / EXPLORE)
+   ================================================================ */
+.hero{
+  background:var(--hero);
+  padding:10px 20px 20px;
+}
+[data-theme="dark"] .hero{background:var(--hero);}
+
+/* Greeting row */
+.hero-greeting{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+}
+.hero-greet-left{}
+.hero-greet-name{
+  font-size:22px;font-weight:800;
+  color:#FFF;letter-spacing:-0.4px;line-height:1.1;
+}
+.hero-greet-sub{font-size:12px;color:rgba(255,255,255,0.55);margin-top:3px;}
+.hero-level-badge{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:var(--r-p);
+  padding:6px 12px;
+  flex-shrink:0;
+}
+.hero-level-badge span{font-size:12px;font-weight:700;color:#FFF;}
+.hero-pts-val{color:var(--gold) !important;}
+
+/* XP bar in hero */
+.hero-xp{
+  background:rgba(255,255,255,0.1);
+  border-radius:var(--r-p);
+  height:5px;
+  margin-bottom:16px;
+  overflow:hidden;
+}
+.hero-xp-fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--sky),#5BD0FF);
+  border-radius:var(--r-p);
+  transition:width 800ms ease;
+}
+
+/* Search bar */
+.search-bar{
+  display:flex;align-items:center;gap:10px;
+  background:#FFFFFF;
+  border-radius:var(--r-p);
+  padding:11px 18px;
+  margin-bottom:14px;
+  box-shadow:var(--elev-2);
+}
+[data-theme="dark"] .search-bar{background:var(--bg-3);}
+.search-bar input{flex:1;font-size:14px;color:var(--ink);background:transparent;border:none;}
+.search-bar input::placeholder{color:var(--ink-3);}
+.sb-icon{flex-shrink:0;stroke:var(--ink-3);fill:none;stroke-width:2.3;stroke-linecap:round;width:18px;height:18px;}
+
+/* Hero chips */
+.hero-chips{
+  display:flex;gap:8px;
+  overflow-x:auto;scrollbar-width:none;
+  margin:0 -20px;padding:0 20px;
+}
+.hero-chips::-webkit-scrollbar{display:none;}
+.hero-chips::after{content:'';width:20px;flex-shrink:0;}
+.chip{
+  flex-shrink:0;display:flex;align-items:center;gap:5px;
+  padding:7px 13px;border-radius:var(--r-s);
+  background:rgba(255,255,255,0.13);
+  border:1px solid rgba(255,255,255,0.22);
+  color:#FFF;font-size:12px;font-weight:600;
+  white-space:nowrap;position:relative;overflow:hidden;
+  transition:background var(--t-fast);
+}
+.chip svg{width:13px;height:13px;stroke:currentColor;stroke-width:2;fill:none;flex-shrink:0;}
+.chip.active{background:#FFF;color:var(--navy);}
+
+/* ================================================================
+   FEATURED CARD (Ficha Destacada)
+   ================================================================ */
+.featured-card{
+  margin:20px 20px 0;
+  border-radius:var(--r-xl);
+  overflow:hidden;
+  position:relative;
+  height:170px;
+  cursor:pointer;
+  box-shadow:var(--elev-2);
+}
+.featured-card-img{
+  position:absolute;inset:0;
+}
+.featured-card-img img{
+  height:100%;
+  transition:transform 400ms ease;
+}
+.featured-card:active .featured-card-img img{transform:scale(1.03);}
+.featured-card-scrim{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.1) 60%,transparent 100%);
+}
+.featured-badge{
+  position:absolute;top:12px;left:12px;
+  background:var(--gold);color:#000;
+  font-size:10px;font-weight:700;
+  padding:4px 10px;border-radius:var(--r-p);
+  display:flex;align-items:center;gap:4px;letter-spacing:0.3px;
+}
+.featured-card-body{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:14px 16px;
+}
+.featured-card-cat{font-size:10px;font-weight:700;color:rgba(255,255,255,0.7);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.featured-card-title{font-size:18px;font-weight:800;color:#FFF;letter-spacing:-0.3px;line-height:1.2;}
+.featured-card-sub{font-size:12px;color:rgba(255,255,255,0.65);margin-top:3px;}
+.featured-fav{
+  position:absolute;top:12px;right:12px;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,255,255,0.88);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;
+  box-shadow:var(--elev-1);
+  transition:transform var(--t-fast);
+}
+.featured-fav:active{transform:scale(1.2);}
+
+/* ================================================================
+   RETO ACTIVO
+   ================================================================ */
+.reto-card{
+  margin:16px 20px 0;
+  border-radius:var(--r-l);
+  padding:16px;
+  background:var(--gold-tint);
+  border:1.5px solid rgba(242,183,1,0.25);
+  display:flex;align-items:center;gap:14px;
+  cursor:pointer;
+  transition:transform var(--t-fast);
+  position:relative;overflow:hidden;
+}
+.reto-card:active{transform:scale(0.98);}
+.reto-icon{
+  width:44px;height:44px;border-radius:var(--r-m);
+  background:var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.reto-body{flex:1;}
+.reto-label{font-size:10px;font-weight:700;color:var(--gold-dark);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.reto-title{font-size:14px;font-weight:700;color:var(--ink);line-height:1.35;}
+.reto-pts{font-size:12px;font-weight:600;color:var(--gold-dark);margin-top:3px;}
+.reto-arrow{
+  flex-shrink:0;
+  stroke:var(--gold-dark);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+  width:16px;height:16px;
+}
+
+/* ================================================================
+   HISTORIA DEL DÍA
+   ================================================================ */
+.historia-card{
+  margin:16px 20px 0;
+  border-radius:var(--r-l);
+  overflow:hidden;
+  background:var(--navy);
+  position:relative;
+}
+.historia-inner{padding:20px 18px;}
+.historia-label{
+  font-size:10px;font-weight:700;
+  color:var(--sky);letter-spacing:1.5px;
+  text-transform:uppercase;margin-bottom:10px;
+}
+.historia-text{
+  font-family:'Inter',system-ui,sans-serif;
+  font-style:italic;
+  font-weight:600;
+  font-size:16px;line-height:1.65;
+  color:rgba(255,255,255,0.9);
+}
+.historia-author{
+  font-size:11px;color:rgba(255,255,255,0.4);
+  margin-top:12px;font-style:normal;
+}
+
+/* ================================================================
+   EXPERIENCE CARDS — horizontal scroll
+   ================================================================ */
+.exp-scroll{
+  display:flex;gap:12px;
+  overflow-x:auto;scrollbar-width:none;
+  margin:0 -20px;padding:0 20px;
+}
+.exp-scroll::-webkit-scrollbar{display:none;}
+.exp-scroll::after{content:'';width:20px;flex-shrink:0;}
+
+.exp-card{
+  flex-shrink:0;width:174px;
+  border-radius:var(--r-l);
+  background:var(--surface);
+  border:1px solid var(--border);
+  overflow:hidden;cursor:pointer;
+  position:relative;
+  box-shadow:var(--elev-1);
+  transition:transform var(--t-fast),box-shadow var(--t-fast);
+}
+.exp-card:active{transform:scale(0.97);box-shadow:none;}
+.exp-card-img{position:relative;height:124px;overflow:hidden;}
+.exp-card-img img{height:124px;transition:transform 400ms ease;}
+.exp-card:active .exp-card-img img{transform:scale(1.03);}
+.cat-badge{
+  position:absolute;top:8px;left:8px;
+  padding:3px 9px;border-radius:var(--r-p);
+  font-size:10px;font-weight:700;color:#FFF;
+  display:flex;align-items:center;gap:4px;
+}
+.cat-badge.navy{background:rgba(0,25,188,0.82);}
+.cat-badge.ember{background:rgba(242,65,53,0.85);}
+.cat-badge.sky{background:rgba(0,188,242,0.85);}
+.cat-badge.gold{background:rgba(185,139,0,0.85);}
+
+.fav-btn{
+  position:absolute;top:8px;right:8px;
+  width:30px;height:30px;border-radius:50%;
+  background:rgba(255,255,255,0.88);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;transition:transform var(--t-fast);
+  box-shadow:0 1px 4px rgba(0,0,0,0.15);
+}
+.fav-btn:active{transform:scale(1.22);}
+
+.exp-card-body{padding:10px 12px 13px;}
+.exp-card-name{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px;line-height:1.25;}
+.star-row{display:flex;align-items:center;gap:1px;margin-bottom:3px;}
+.star{font-size:11px;color:var(--gold);}
+.star.off{color:var(--bg-3);}
+.pts-lbl{font-size:10px;color:var(--ink-3);margin-left:3px;font-weight:500;}
+.exp-card-sub{font-size:11px;color:var(--ink-3);line-height:1.35;}
+
+/* ================================================================
+   EVENT CARDS — horizontal scroll (Home)
+   ================================================================ */
+.ev-mini-scroll{
+  display:flex;gap:12px;
+  overflow-x:auto;scrollbar-width:none;
+  margin:0 -20px;padding:0 20px;
+}
+.ev-mini-scroll::-webkit-scrollbar{display:none;}
+.ev-mini-scroll::after{content:'';width:20px;flex-shrink:0;}
+.ev-mini-card{
+  flex-shrink:0;width:200px;
+  border-radius:var(--r-l);
+  background:var(--surface);
+  border:1px solid var(--border);
+  overflow:hidden;cursor:pointer;
+  box-shadow:var(--elev-1);
+  transition:transform var(--t-fast);
+}
+.ev-mini-card:active{transform:scale(0.97);}
+.ev-mini-img{height:100px;overflow:hidden;position:relative;}
+.ev-mini-img img{height:100px;}
+.ev-mini-date{
+  position:absolute;top:8px;left:8px;
+  background:var(--ember);color:#FFF;
+  font-size:10px;font-weight:700;
+  padding:3px 8px;border-radius:var(--r-p);
+}
+.ev-mini-body{padding:10px 12px 13px;}
+.ev-mini-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.ev-mini-sub{font-size:11px;color:var(--ink-3);}
+
+/* ================================================================
+   RECOMMENDATION GRID (2 cols)
+   ================================================================ */
+.rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.rec-card{
+  border-radius:var(--r-m);
+  background:var(--surface);
+  border:1px solid var(--border);
+  overflow:hidden;cursor:pointer;
+  box-shadow:var(--elev-1);
+  transition:transform var(--t-fast);
+  position:relative;
+}
+.rec-card:active{transform:scale(0.97);}
+.rec-card-img{position:relative;height:92px;overflow:hidden;}
+.rec-card-img img{height:92px;}
+.rec-card-body{padding:9px 10px 11px;}
+.rec-card-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.rec-card-pts{font-size:10px;color:var(--gold-dark);margin-bottom:2px;font-weight:600;}
+.rec-card-addr{font-size:10px;color:var(--ink-3);}
+
+/* ================================================================
+   EXPLORE SCREEN
+   ================================================================ */
+.explore-hero{background:var(--hero);padding:8px 20px 0;}
+.explore-search{
+  display:flex;align-items:center;gap:10px;
+  background:#FFF;border-radius:var(--r-m);
+  padding:12px 14px;box-shadow:var(--elev-1);
+  margin-bottom:0;
+}
+[data-theme="dark"] .explore-search{background:var(--bg-3);}
+.explore-search input{flex:1;font-size:14px;color:var(--ink);background:transparent;border:none;}
+.explore-search input::placeholder{color:var(--ink-3);}
+.explore-cats{
+  display:flex;gap:8px;
+  overflow-x:auto;scrollbar-width:none;
+  padding:12px 0;margin:0 -20px;padding-left:20px;
+}
+.explore-cats::-webkit-scrollbar{display:none;}
+.explore-cats::after{content:'';width:20px;flex-shrink:0;}
+.ecat{
+  flex-shrink:0;padding:7px 14px;
+  border-radius:var(--r-s);
+  background:rgba(255,255,255,0.13);
+  border:1px solid rgba(255,255,255,0.22);
+  color:#FFF;font-size:12px;font-weight:600;
+  white-space:nowrap;cursor:pointer;
+  transition:all var(--t-fast);
+  position:relative;overflow:hidden;
+}
+.ecat.active{background:#FFF;color:var(--navy);}
+
+/* Map toggle bar */
+.explore-view-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px 8px;
+  background:var(--bg);
+  border-bottom:1px solid var(--divider);
+}
+.explore-meta{font-size:12px;color:var(--ink-3);}
+.view-toggle{
+  display:flex;gap:2px;
+  background:var(--bg-2);
+  border-radius:var(--r-s);
+  padding:3px;
+}
+.view-btn{
+  padding:5px 10px;border-radius:6px;
+  font-size:11px;font-weight:600;color:var(--ink-3);
+  transition:all var(--t-fast);
+  display:flex;align-items:center;gap:4px;
+}
+.view-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.view-btn.active{background:#FFF;color:var(--navy);box-shadow:var(--elev-1);}
+[data-theme="dark"] .view-btn.active{background:var(--surface);color:var(--sky);}
+
+/* Map placeholder */
+.map-placeholder{
+  height:260px;
+  background:linear-gradient(135deg,#E8EEF8 0%,#D8E4F2 100%);
+  position:relative;overflow:hidden;
+}
+[data-theme="dark"] .map-placeholder{background:linear-gradient(135deg,#0E1430 0%,#151A38 100%);}
+.map-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,25,188,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,25,188,0.06) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+[data-theme="dark"] .map-grid{background-image:linear-gradient(rgba(0,188,242,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,188,242,0.06) 1px,transparent 1px);}
+.map-street-h,.map-street-v{position:absolute;background:rgba(255,255,255,0.6);}
+[data-theme="dark"] .map-street-h,[data-theme="dark"] .map-street-v{background:rgba(255,255,255,0.08);}
+.map-street-h{height:2px;left:0;right:0;}
+.map-street-v{width:2px;top:0;bottom:0;}
+.map-pin{
+  position:absolute;
+  display:flex;flex-direction:column;align-items:center;
+  cursor:pointer;transform:translateX(-50%);
+}
+.map-pin-dot{
+  width:32px;height:32px;border-radius:50% 50% 50% 4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  border:2px solid #FFF;
+  transition:transform var(--t-fast);
+}
+.map-pin-dot.navy{background:var(--navy);}
+.map-pin-dot.gold{background:var(--gold);}
+.map-pin-dot.ember{background:var(--ember);}
+.map-pin-dot.sky{background:var(--sky);}
+.map-pin:active .map-pin-dot{transform:scale(1.15);}
+.map-pin-lbl{font-size:10px;font-weight:700;color:var(--ink);background:#FFF;padding:2px 6px;border-radius:var(--r-p);margin-top:4px;box-shadow:var(--elev-1);white-space:nowrap;}
+.map-you{
+  position:absolute;
+  width:14px;height:14px;border-radius:50%;
+  background:var(--navy);border:3px solid #FFF;
+  box-shadow:0 0 0 4px rgba(0,25,188,0.2);
+}
+.map-recenter{
+  position:absolute;bottom:12px;right:12px;
+  width:36px;height:36px;border-radius:50%;
+  background:#FFF;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--elev-2);
+}
+.map-recenter svg{width:17px;height:17px;stroke:var(--navy);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+[data-theme="dark"] .map-recenter{background:var(--surface);}
+
+/* Place list items */
+.place-list{border-top:1px solid var(--divider);}
+.place-item{
+  cursor:pointer;
+  border-bottom:1px solid var(--divider);
+  transition:background var(--t-fast);
+  position:relative;overflow:hidden;
+}
+.place-item:active{background:var(--bg-2);}
+.place-item-img{position:relative;height:160px;overflow:hidden;}
+.place-item-img img{height:160px;transition:transform 400ms ease;}
+.place-item:active .place-item-img img{transform:scale(1.02);}
+.place-item-body{padding:12px 20px 15px;}
+.place-item-name{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.place-item-stars{display:flex;align-items:center;gap:1px;margin-bottom:3px;}
+.place-item-addr{font-size:12px;color:var(--ink-3);}
+
+/* ================================================================
+   EVENTOS SCREEN
+   ================================================================ */
+.eventos-hero{
+  background:var(--hero);
+  padding:10px 20px 16px;
+}
+.eventos-hero-title{font-size:24px;font-weight:800;color:#FFF;letter-spacing:-0.4px;margin-bottom:4px;}
+.eventos-hero-sub{font-size:13px;color:rgba(255,255,255,0.55);}
+.eventos-filter-row{
+  display:flex;gap:8px;overflow-x:auto;
+  scrollbar-width:none;
+  margin:0 -20px;padding:12px 20px 0;
+}
+.eventos-filter-row::-webkit-scrollbar{display:none;}
+.ev-filter{
+  flex-shrink:0;padding:6px 14px;
+  border-radius:var(--r-p);
+  background:rgba(255,255,255,0.13);
+  border:1px solid rgba(255,255,255,0.22);
+  color:#FFF;font-size:12px;font-weight:600;
+  white-space:nowrap;cursor:pointer;
+  transition:all var(--t-fast);
+}
+.ev-filter.active{background:#FFF;color:var(--navy);}
+
+.ev-list{padding:0 20px;}
+.ev-card{
+  border-radius:var(--r-l);
+  background:var(--surface);
+  border:1px solid var(--border);
+  overflow:hidden;
+  margin-bottom:16px;
+  box-shadow:var(--elev-1);
+  cursor:pointer;
+  transition:transform var(--t-fast);
+  position:relative;
+}
+.ev-card:active{transform:scale(0.98);}
+.ev-card-img{height:148px;overflow:hidden;position:relative;}
+.ev-card-img img{height:148px;transition:transform 400ms ease;}
+.ev-card:active .ev-card-img img{transform:scale(1.02);}
+.ev-date-badge{
+  position:absolute;top:12px;left:12px;
+  background:var(--ember);color:#FFF;
+  font-size:11px;font-weight:700;
+  padding:5px 11px;border-radius:var(--r-p);
+}
+.ev-destac-badge{
+  position:absolute;top:12px;right:12px;
+  background:var(--gold);color:#000;
+  font-size:10px;font-weight:700;
+  padding:4px 10px;border-radius:var(--r-p);
+}
+.ev-card-body{padding:14px 16px 16px;}
+.ev-card-cat{font-size:10px;font-weight:700;color:var(--ink-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.ev-card-title{font-size:16px;font-weight:700;color:var(--ink);letter-spacing:-0.2px;margin-bottom:5px;}
+.ev-card-meta{font-size:12px;color:var(--ink-3);margin-bottom:12px;}
+.ev-card-footer{display:flex;align-items:center;justify-content:space-between;}
+.ev-pts-pill{
+  display:flex;align-items:center;gap:5px;
+  background:var(--gold-tint);
+  border-radius:var(--r-p);
+  padding:5px 11px;
+  font-size:12px;font-weight:700;color:var(--gold-dark);
+}
+.ev-asistir-btn{
+  padding:8px 18px;
+  border-radius:var(--r-p);
+  background:var(--navy);color:#FFF;
+  font-size:13px;font-weight:700;
+  transition:all var(--t-fast);
+}
+.ev-asistir-btn:active{transform:scale(0.96);background:var(--navy-dark);}
+.ev-asistir-btn.done{background:var(--bg-2);color:var(--ink-3);}
+[data-theme="dark"] .ev-asistir-btn{background:var(--sky);color:var(--bg);}
+[data-theme="dark"] .ev-asistir-btn.done{background:var(--bg-3);color:var(--ink-3);}
+
+/* ================================================================
+   FAVORITOS SCREEN
+   ================================================================ */
+.fav-hero{background:var(--hero);padding:10px 20px 16px;}
+.fav-hero-title{font-size:24px;font-weight:800;color:#FFF;letter-spacing:-0.4px;margin-bottom:12px;}
+.fav-tabs{display:flex;gap:0;background:rgba(255,255,255,0.1);border-radius:var(--r-m);padding:3px;}
+.fav-tab-btn{
+  flex:1;padding:8px 0;border-radius:10px;
+  font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);
+  transition:all var(--t-fast);
+  text-align:center;
+}
+.fav-tab-btn.active{background:#FFF;color:var(--navy);}
+
+.fav-content{padding:0 20px;}
+.fav-section{display:none;}
+.fav-section.active{display:block;}
+.fav-item{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 0;
+  border-bottom:1px solid var(--divider);
+  cursor:pointer;
+  transition:background var(--t-fast);
+}
+.fav-item:last-child{border-bottom:none;}
+.fav-item-img{
+  width:62px;height:62px;border-radius:var(--r-m);
+  overflow:hidden;flex-shrink:0;
+}
+.fav-item-img img{height:62px;}
+.fav-item-body{flex:1;}
+.fav-item-name{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:3px;}
+.fav-item-sub{font-size:12px;color:var(--ink-3);}
+.fav-item-remove{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+  transition:transform var(--t-fast);
+}
+.fav-item-remove:active{transform:scale(1.2);}
+
+/* Progress bar for routes */
+.route-progress{margin-top:6px;}
+.route-progress-bar{
+  height:4px;background:var(--bg-3);
+  border-radius:var(--r-p);overflow:hidden;margin-top:3px;
+}
+.route-progress-fill{height:100%;background:var(--navy);border-radius:var(--r-p);}
+[data-theme="dark"] .route-progress-fill{background:var(--sky);}
+.route-progress-lbl{font-size:10px;color:var(--ink-3);}
+
+/* Offline pill */
+.offline-pill{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--sky-tint);
+  border-radius:var(--r-p);padding:3px 9px;
+  font-size:10px;font-weight:700;color:var(--sky);
+  margin-top:4px;border:1px solid rgba(0,188,242,0.2);
+}
+
+/* Empty state */
+.empty-state{
+  display:flex;flex-direction:column;
+  align-items:center;text-align:center;
+  padding:48px 32px;
+}
+.empty-icon{font-size:44px;margin-bottom:14px;}
+.empty-title{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:8px;}
+.empty-sub{font-size:14px;color:var(--ink-3);line-height:1.6;}
+
+/* ================================================================
+   PERFIL SCREEN
+   ================================================================ */
+.profile-hero{
+  background:var(--navy);
+  padding:10px 20px 22px;
+}
+[data-theme="dark"] .profile-hero{background:var(--hero);}
+.profile-top{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.profile-avatar{
+  width:58px;height:58px;border-radius:50%;
+  border:2.5px solid var(--gold);
+  object-fit:cover;object-position:center top;
+  flex-shrink:0;
+  box-shadow:0 0 0 4px rgba(242,183,1,0.22);
+}
+.profile-name{font-size:20px;font-weight:800;color:#FFF;letter-spacing:-0.3px;}
+.profile-tag{
+  display:inline-block;margin-top:4px;
+  background:rgba(255,255,255,0.13);
+  border-radius:var(--r-p);padding:3px 10px;
+  font-size:11px;font-weight:500;color:rgba(255,255,255,0.8);
+}
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.p-stat{
+  background:rgba(255,255,255,0.1);
+  border-radius:var(--r-m);padding:12px 6px;text-align:center;
+}
+.p-stat-val{font-size:22px;font-weight:800;color:#FFF;line-height:1;}
+.p-stat-lbl{font-size:9px;font-weight:600;color:rgba(255,255,255,0.5);margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;}
+
+.level-card{
+  margin:20px 20px 0;
+  background:var(--surface);border-radius:var(--r-l);
+  padding:18px;border:1px solid var(--border);
+  box-shadow:var(--elev-1);
+}
+.level-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.level-card-title{font-size:15px;font-weight:700;color:var(--ink);}
+.level-card-sub{font-size:11px;color:var(--ink-3);margin-top:2px;}
+.level-circle{
+  width:50px;height:50px;border-radius:50%;
+  border:2.5px solid var(--navy);
+  display:flex;align-items:center;justify-content:center;
+  background:var(--navy-tint);
+}
+[data-theme="dark"] .level-circle{border-color:var(--sky);background:var(--sky-tint);}
+.level-num{font-size:22px;font-weight:800;color:var(--navy);}
+[data-theme="dark"] .level-num{color:var(--sky);}
+
+.xp-labels{display:flex;justify-content:space-between;margin-bottom:5px;}
+.xp-cur{font-size:12px;font-weight:600;color:var(--ink);}
+.xp-nxt{font-size:12px;color:var(--ink-3);}
+.xp-track{height:7px;background:var(--bg-3);border-radius:var(--r-p);overflow:hidden;margin-bottom:6px;}
+.xp-fill{height:100%;background:var(--navy);border-radius:var(--r-p);transition:width 700ms ease;}
+[data-theme="dark"] .xp-fill{background:var(--sky);}
+.xp-hint{font-size:11px;color:var(--ink-3);}
+
+.level-rungs{display:flex;gap:8px;margin-top:16px;}
+.rung{
+  flex:1;border-radius:var(--r-s);
+  padding:8px 4px;text-align:center;
+  border:1px solid var(--divider);
+}
+.rung.done{background:var(--sky-tint);border-color:rgba(0,188,242,0.2);}
+.rung.curr{background:var(--navy-tint);border-color:rgba(0,25,188,0.2);}
+[data-theme="dark"] .rung.curr{background:var(--sky-tint);border-color:rgba(0,188,242,0.2);}
+.rung-n{font-size:16px;font-weight:800;color:var(--ink-3);}
+.rung-l{font-size:8px;font-weight:600;color:var(--ink-3);margin-top:2px;}
+.rung.done .rung-n,.rung.done .rung-l{color:var(--sky);}
+.rung.curr .rung-n,.rung.curr .rung-l{color:var(--navy);}
+[data-theme="dark"] .rung.curr .rung-n,[data-theme="dark"] .rung.curr .rung-l{color:var(--sky);}
+
+/* Badges */
+.badges-section{padding:20px 20px 0;}
+.badge-scroll{
+  display:flex;gap:10px;
+  overflow-x:auto;scrollbar-width:none;
+  margin:0 -20px;padding:0 20px;
+}
+.badge-scroll::-webkit-scrollbar{display:none;}
+.badge-scroll::after{content:'';width:20px;flex-shrink:0;}
+.badge-card{
+  flex-shrink:0;min-width:74px;
+  background:var(--bg-2);
+  border-radius:var(--r-m);
+  padding:11px 8px;text-align:center;
+  border:1px solid var(--divider);
+}
+.badge-card.unlocked{background:var(--sky-tint);border-color:rgba(0,188,242,0.22);}
+.badge-card.locked{opacity:0.38;}
+.badge-icon{font-size:26px;line-height:1;}
+.badge-name{font-size:9px;font-weight:600;color:var(--ink);margin-top:5px;line-height:1.35;}
+.badge-bar{height:2.5px;background:var(--divider);border-radius:var(--r-p);margin-top:7px;overflow:hidden;}
+.badge-fill{height:100%;background:var(--sky);border-radius:var(--r-p);}
+
+/* Rewards */
+.rewards-section{padding:20px 20px 110px;}
+.rew-item{
+  display:flex;align-items:center;gap:13px;
+  padding:15px 0;
+  border-bottom:1px solid var(--divider);
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:opacity var(--t-fast);
+}
+.rew-item:last-child{border-bottom:none;}
+.rew-item.disabled{opacity:0.38;cursor:default;pointer-events:none;}
+.rew-icon{font-size:24px;flex-shrink:0;}
+.rew-info{flex:1;}
+.rew-title{font-size:14px;font-weight:600;color:var(--ink);}
+.rew-ally{font-size:11px;color:var(--ink-3);margin-top:2px;}
+.rew-right{text-align:right;flex-shrink:0;}
+.rew-pts{font-size:14px;font-weight:700;color:var(--navy);}
+[data-theme="dark"] .rew-pts{color:var(--sky);}
+.rew-ok{font-size:10px;font-weight:600;color:#16A34A;margin-top:2px;}
+.rew-off{font-size:10px;color:var(--ink-3);margin-top:2px;}
+
+/* ================================================================
+   DETAIL SCREEN
+   ================================================================ */
+.detail-hero{position:relative;height:250px;overflow:hidden;}
+.detail-hero img{height:250px;}
+.detail-hero-scrim{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,0.38) 0%,rgba(0,0,0,0.05) 45%,rgba(0,0,0,0.18) 100%);
+}
+.detail-appbar{
+  position:absolute;top:0;left:0;right:0;
+  height:58px;display:flex;
+  align-items:flex-end;justify-content:space-between;
+  padding:0 16px 10px;z-index:10;
+}
+.detail-back{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,0.88);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--elev-2);
+  transition:transform var(--t-fast);
+}
+.detail-back:active{transform:scale(0.9);}
+.detail-back svg{width:18px;height:18px;}
+.detail-fav{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,0.88);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;
+  box-shadow:var(--elev-2);
+  transition:transform var(--t-fast);
+}
+.detail-fav:active{transform:scale(1.18);}
+
+.detail-body{padding:18px 20px;}
+.detail-overline{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--navy);margin-bottom:5px;}
+[data-theme="dark"] .detail-overline{color:var(--sky);}
+.detail-title{font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-0.4px;line-height:1.18;margin-bottom:10px;}
+.detail-rating-row{display:flex;align-items:center;gap:4px;margin-bottom:16px;}
+.detail-rating-pts{font-size:13px;font-weight:600;color:var(--ink-3);margin-left:4px;}
+.detail-info{margin-bottom:16px;}
+.detail-info-row{display:flex;gap:8px;margin-bottom:6px;font-size:13px;color:var(--ink-2);line-height:1.5;}
+.dil{font-weight:700;color:var(--ink);flex-shrink:0;}
+.detail-desc{font-size:14px;color:var(--ink-2);line-height:1.72;margin-bottom:18px;}
+.gallery{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:0 20px 4px;}
+.gallery::-webkit-scrollbar{display:none;}
+.gallery::after{content:'';width:20px;flex-shrink:0;}
+.gallery img{flex-shrink:0;width:96px;height:72px;border-radius:var(--r-m);object-fit:cover;border:1px solid var(--border);}
+
+.full-divider{height:8px;background:var(--bg-2);margin:18px 0 0;}
+.review-wrap{padding:18px 20px;}
+.review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.review-title{font-size:17px;font-weight:700;color:var(--ink);}
+.review-pts{font-size:12px;color:var(--ink-3);}
+.r-stars{display:flex;gap:8px;margin-bottom:14px;}
+.r-star{font-size:34px;color:var(--bg-3);transition:color var(--t-fast),transform var(--t-fast);line-height:1;padding:0;}
+.r-star.lit{color:var(--gold);}
+.r-star:active{transform:scale(1.22);}
+
+.r-textarea{
+  width:100%;background:var(--bg-2);
+  border:1.5px solid var(--border);border-radius:var(--r-m);
+  padding:13px 15px;font-size:14px;color:var(--ink);
+  resize:none;height:82px;margin-bottom:14px;
+  transition:border-color var(--t-fast);
+}
+.r-textarea:focus{border-color:var(--navy);}
+.r-textarea::placeholder{color:var(--ink-3);}
+
+.btn-primary{
+  width:100%;background:var(--navy);color:#FFF;
+  border:none;border-radius:var(--r-p);
+  padding:14px;font-size:15px;font-weight:700;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:background var(--t-fast),transform var(--t-fast);
+}
+.btn-primary:active{transform:scale(0.98);background:var(--navy-dark);}
+[data-theme="dark"] .btn-primary{background:var(--sky);color:var(--bg);}
+
+.share-row{
+  display:flex;align-items:center;gap:10px;
+  margin-top:14px;font-size:13px;color:var(--ink-3);
+}
+.share-icon{
+  width:36px;height:36px;border-radius:50%;
+  border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:pointer;
+  transition:border-color var(--t-fast),transform var(--t-fast);
+}
+.share-icon:active{transform:scale(0.9);border-color:var(--navy);}
+
+/* ================================================================
+   RESPONSIVE — full screen on real mobile
+   ================================================================ */
+@media(max-width:430px){
+  #app{max-width:100%;}
+  #ob-overlay{max-width:100%;}
+  .dm-btn{top:8px;right:8px;}
+}
+.b360-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Inter',system-ui,sans-serif;font-style:italic;font-size:13px;font-weight:700;color:rgba(255,255,255,0.78);text-align:center;padding:12px;line-height:1.35;text-shadow:0 1px 4px rgba(0,0,0,0.5);pointer-events:none;}
+</style>
+</head>
+<body>
+
+<!-- Dark mode toggle -->
+<button class="dm-btn" id="dmBtn" aria-label="Toggle dark mode">🌙</button>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="alert">
+  <span class="t-icon" id="toastIcon">⭐</span>
+  <span class="t-text" id="toastText">Acción registrada</span>
+  <span class="t-pts" id="toastPts"></span>
+</div>
+
+<!-- ================================================================
+     ONBOARDING OVERLAY
+     ================================================================ -->
+<div id="ob-overlay">
+
+  <!-- STEP 0: SPLASH -->
+  <div class="ob-step ob-active" id="ob-splash">
+    <div class="splash-glow"></div>
+    <div class="splash-logo-wrap">
+      <svg viewBox="0 0 1537 327" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 202.21H14.92V100.95H0V72.47H69.39C76.92 72.47 83.59 73.53 89.39 75.63C95.19 77.74 100.09 80.6 104.08 84.22C108.07 87.84 111.09 92.17 113.12 97.22C115.15 102.27 116.17 107.73 116.17 113.61V116.32C116.17 125.36 113.64 132.59 108.6 138.02C103.55 143.44 97.19 147.21 89.5 149.32V153.39C97.19 155.5 103.55 159.31 108.6 164.8C113.65 170.3 116.17 177.57 116.17 186.61V189.32C116.17 195.2 115.15 200.66 113.12 205.71C111.09 210.76 108.07 215.13 104.08 218.82C100.09 222.51 95.19 225.41 89.39 227.52C83.59 229.63 76.92 230.68 69.39 230.68H0V202.2V202.21ZM44.75 137.11H66.45C72.78 137.11 77.9 135.79 81.82 133.15C85.74 130.52 87.7 126.03 87.7 119.7V118.34C87.7 112.01 85.74 107.53 81.82 104.89C77.9 102.26 72.78 100.93 66.45 100.93H44.75V137.09V137.11ZM44.75 202.21H66.45C72.78 202.21 77.9 200.85 81.82 198.14C85.74 195.43 87.7 190.91 87.7 184.58V183.22C87.7 176.89 85.74 172.37 81.82 169.66C77.9 166.95 72.78 165.59 66.45 165.59H44.75V202.21Z" fill="white"/>
+        <path d="M133.74 133.95C133.74 113.46 138.9 97.56 149.22 86.26C159.54 74.96 173.82 69.31 192.05 69.31C210.28 69.31 224.56 74.96 234.88 86.26C245.2 97.56 250.36 113.46 250.36 133.95V169.21C250.36 190.31 245.2 206.36 234.88 217.35C224.56 228.35 210.28 233.85 192.05 233.85C173.82 233.85 159.54 228.35 149.22 217.35C138.9 206.35 133.74 190.31 133.74 169.21V133.95ZM192.05 206.73C197.47 206.73 202 205.86 205.61 204.13C209.23 202.4 212.16 199.95 214.42 196.78C216.68 193.62 218.26 189.85 219.17 185.48C220.07 181.11 220.53 176.29 220.53 171.02V132.14C220.53 127.17 220 122.5 218.95 118.13C217.89 113.76 216.24 109.99 213.98 106.83C211.72 103.67 208.78 101.14 205.17 99.26C201.55 97.38 197.18 96.43 192.06 96.43C186.94 96.43 182.57 97.37 178.95 99.26C175.33 101.15 172.4 103.67 170.14 106.83C167.88 110 166.22 113.76 165.17 118.13C164.11 122.5 163.59 127.17 163.59 132.14V171.02C163.59 176.3 164.04 181.12 164.95 185.48C165.85 189.85 167.44 193.62 169.7 196.78C171.96 199.95 174.9 202.4 178.51 204.13C182.13 205.86 186.65 206.73 192.07 206.73H192.05Z" fill="white"/>
+        <path d="M272.76 72.47H302.59V202.21H374.46V230.69H272.75V72.47H272.76Z" fill="white"/>
+        <path d="M397.43 72.47H503.21V100.95H465.24V202.21H503.21V230.69H397.43V202.21H435.4V100.95H397.43V72.47ZM450.77 25.01H481.06L462.07 55.75H439.02L450.77 25.01Z" fill="white"/>
+        <path d="M520.48 72.47H551.22L582.18 215.77H586.25L617.21 72.47H647.95L612.24 230.68H556.19L520.48 72.47Z" fill="white"/>
+        <path d="M736.37 196.78H682.58L674.9 230.68H643.71L681.46 72.47H737.51L775.26 230.68H744.07L736.39 196.78H736.37ZM688.91 168.3H729.82L711.51 87.38H707.44L688.91 168.3Z" fill="white"/>
+        <path d="M897.93 230.68H868.1V183.22C868.1 179.6 867.16 176.67 865.27 174.4C863.38 172.14 860.26 171.01 855.89 171.01H821.53V230.68H791.7V72.47H852.27C860.41 72.47 867.56 73.6 873.74 75.86C879.92 78.12 885.08 81.25 889.22 85.24C893.36 89.23 896.53 93.87 898.71 99.14C900.89 104.42 901.99 110.07 901.99 116.09V121.51C901.99 127.99 900.26 134.05 896.79 139.71C893.32 145.36 887.98 149.69 880.74 152.71V156.78C886.01 157.38 890.19 159.42 893.28 162.88C896.37 166.35 897.91 170.72 897.91 175.99V230.69L897.93 230.68ZM821.54 142.54H850.02C857.25 142.54 862.75 140.84 866.52 137.45C870.28 134.06 872.17 129.28 872.17 123.1V120.39C872.17 115.12 870.28 110.56 866.52 106.72C862.75 102.88 857.25 100.96 850.02 100.96H821.54V142.55V142.54Z" fill="white"/>
+        <path d="M970.59 326.58C912.53 326.58 868.53 285.76 868.53 230.42H898.47C899.38 269.88 929.77 298.46 970.14 298.46C1010.51 298.46 1039.99 268.98 1039.99 230.88C1040.44 191.42 1008.69 163.3 965.6 163.3H917.52V134.72H955.62L1011.41 53.98C1013.68 49.9 1015.49 45.82 1015.49 42.64C1015.49 36.74 1010.95 33.11 1002.79 33.11H908.9V4.54H1020.03C1038.63 4.54 1051.33 16.79 1051.33 33.57C1051.33 41.28 1049.06 48.08 1044.07 54.43L987.83 136.08C1036.36 143.34 1070.84 180.98 1070.84 230.42C1070.84 285.3 1028.66 326.58 970.6 326.58H970.59Z" fill="white"/>
+        <path d="M1312.59 213.18C1312.59 278.5 1262.7 326.58 1198.29 326.58C1133.88 326.58 1083.99 278.5 1083.99 213.18C1083.99 172.36 1103.95 137.43 1135.24 117.93L1198.29 4.53H1232.76L1178.33 101.6C1184.68 100.24 1191.48 99.79 1198.29 99.79C1262.7 99.79 1312.59 148.78 1312.59 213.19V213.18ZM1281.75 213.18C1281.75 164.65 1244.56 127.45 1198.29 127.45C1152.02 127.45 1115.28 164.64 1115.28 213.18C1115.28 261.72 1152.02 298.91 1198.29 298.91C1244.56 298.91 1281.75 260.81 1281.75 213.18Z" fill="white"/>
+        <path d="M1536.66 163.29C1536.66 264.44 1494.02 326.58 1428.25 326.58C1362.48 326.58 1320.3 264.44 1320.3 163.29C1320.3 62.14 1362.48 0 1428.25 0C1494.02 0 1536.66 59.87 1536.66 163.29ZM1505.36 163.29C1505.36 73.48 1474.52 29.03 1428.25 29.03C1381.98 29.03 1351.59 73.48 1351.59 163.29C1351.59 253.1 1382.89 297.1 1428.25 297.1C1473.61 297.1 1505.36 250.38 1505.36 163.29Z" fill="white"/>
+      </svg>
+    </div>
+    <p class="splash-tagline">Conectando el pulso local con el mundo</p>
+    <div class="splash-indicator">
+      <div class="splash-dot a"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+      <div class="splash-dot"></div>
+    </div>
+    <p class="splash-tap">Toca para continuar</p>
+  </div>
+
+  <!-- STEP 1: SLIDES -->
+  <div class="ob-step" id="ob-slides">
+    <div class="slides-track" id="slidesTrack">
+
+      <!-- Slide 1 -->
+      <div class="slide">
+        <div class="slide-illus">
+          <svg viewBox="0 0 220 180" fill="none">
+            <rect x="10" y="40" width="200" height="130" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+            <rect x="26" y="58" width="80" height="54" rx="8" fill="rgba(0,188,242,0.15)" stroke="rgba(0,188,242,0.3)" stroke-width="1"/>
+            <rect x="116" y="58" width="78" height="24" rx="6" fill="rgba(255,255,255,0.07)"/>
+            <rect x="116" y="88" width="52" height="10" rx="3" fill="rgba(255,255,255,0.05)"/>
+            <rect x="116" y="104" width="38" height="8" rx="3" fill="rgba(242,183,1,0.3)"/>
+            <rect x="26" y="122" width="168" height="36" rx="8" fill="rgba(255,255,255,0.04)"/>
+            <circle cx="110" cy="28" r="18" fill="rgba(0,25,188,0.5)" stroke="rgba(0,188,242,0.5)" stroke-width="1.5"/>
+            <text x="110" y="34" text-anchor="middle" font-size="18" fill="white">🏛️</text>
+            <line x1="110" y1="46" x2="110" y2="58" stroke="rgba(0,188,242,0.4)" stroke-width="1.5" stroke-dasharray="3 2"/>
+          </svg>
+        </div>
+        <div class="slide-num">01 / 03</div>
+        <div class="slide-title">Explora</div>
+        <div class="slide-body">Descubre rincones históricos y cultura viva. Cada calle tiene una historia que contar.</div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="slide">
+        <div class="slide-illus">
+          <svg viewBox="0 0 220 180" fill="none">
+            <circle cx="110" cy="90" r="70" fill="rgba(0,25,188,0.15)" stroke="rgba(0,25,188,0.3)" stroke-width="1"/>
+            <circle cx="110" cy="90" r="50" fill="rgba(0,188,242,0.08)" stroke="rgba(0,188,242,0.2)" stroke-width="1"/>
+            <circle cx="110" cy="90" r="4" fill="rgba(0,188,242,0.8)"/>
+            <circle cx="70" cy="65" r="16" fill="rgba(242,183,1,0.15)" stroke="rgba(242,183,1,0.4)" stroke-width="1.5"/>
+            <text x="70" y="70" text-anchor="middle" font-size="14" fill="white">🍽️</text>
+            <circle cx="150" cy="75" r="16" fill="rgba(242,65,53,0.15)" stroke="rgba(242,65,53,0.4)" stroke-width="1.5"/>
+            <text x="150" y="80" text-anchor="middle" font-size="14" fill="white">🎉</text>
+            <circle cx="90" cy="125" r="16" fill="rgba(0,188,242,0.15)" stroke="rgba(0,188,242,0.4)" stroke-width="1.5"/>
+            <text x="90" y="130" text-anchor="middle" font-size="14" fill="white">🏨</text>
+            <line x1="110" y1="90" x2="70" y2="65" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="110" y1="90" x2="150" y2="75" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <line x1="110" y1="90" x2="90" y2="125" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="slide-num">02 / 03</div>
+        <div class="slide-title">Descubre</div>
+        <div class="slide-body">Conoce eventos, gastronomía y experiencias reales. Lo que fuimos y lo que somos hoy.</div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="slide">
+        <div class="slide-illus">
+          <svg viewBox="0 0 220 180" fill="none">
+            <path d="M110 20 L125 70 L175 70 L135 100 L150 150 L110 120 L70 150 L85 100 L45 70 L95 70 Z" fill="rgba(242,183,1,0.15)" stroke="rgba(242,183,1,0.5)" stroke-width="1.5"/>
+            <circle cx="110" cy="90" r="28" fill="rgba(242,183,1,0.2)" stroke="rgba(242,183,1,0.6)" stroke-width="2"/>
+            <text x="110" y="98" text-anchor="middle" font-size="24" fill="white">⭐</text>
+            <rect x="30" y="150" width="50" height="18" rx="9" fill="rgba(0,25,188,0.3)" stroke="rgba(0,25,188,0.5)"/>
+            <text x="55" y="163" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.7)" font-family="sans-serif">Curioso</text>
+            <rect x="90" y="150" width="60" height="18" rx="9" fill="rgba(0,188,242,0.3)" stroke="rgba(0,188,242,0.5)"/>
+            <text x="120" y="163" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.7)" font-family="sans-serif">Explorador</text>
+            <rect x="160" y="150" width="50" height="18" rx="9" fill="rgba(242,183,1,0.2)" stroke="rgba(242,183,1,0.3)"/>
+            <text x="185" y="163" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.5)" font-family="sans-serif">Guardián</text>
+          </svg>
+        </div>
+        <div class="slide-num">03 / 03</div>
+        <div class="slide-title">Gana</div>
+        <div class="slide-body">Explora, suma puntos y desbloquea recompensas reales con aliados locales.</div>
+      </div>
+
+    </div><!-- /slides-track -->
+
+    <div class="slides-footer">
+      <button class="slide-prev-btn ob-hidden" id="slidePrev" onclick="slideNav(-1)">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="slides-dots">
+        <div class="s-dot active" id="sd0"></div>
+        <div class="s-dot" id="sd1"></div>
+        <div class="s-dot" id="sd2"></div>
+      </div>
+      <button class="slide-next-btn" id="slideNext" onclick="slideNav(1)">
+        <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </div><!-- /ob-slides -->
+
+  <!-- STEP 2: QUIÉN ERES -->
+  <div class="ob-step" id="ob-profile">
+    <div class="ob-profile-hero">
+      <button onclick="obNext(1)" style="background:none;border:none;color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;padding:0 0 20px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Atrás
+      </button>
+      <div class="ob-logo-sm">
+        <span class="ob-logo-sm-w">BOLÍVAR</span><span class="ob-logo-sm-n">360</span>
+      </div>
+      <div class="ob-profile-hero-title">¿Quién eres?</div>
+      <div class="ob-profile-hero-sub">Personalizamos tu experiencia según cómo vives Ciudad Bolívar.</div>
+    </div>
+    <div class="ob-profile-cards">
+      <div class="ob-profile-card ripple-wrap" id="cardVisitante" onclick="selectProfile('visitante')">
+        <div class="ob-profile-card-icon visitante">🧳</div>
+        <div>
+          <div class="ob-profile-card-title">Visitante</div>
+          <div class="ob-profile-card-sub">Quiero descubrir la ciudad.</div>
+        </div>
+        <div class="ob-profile-card-check">
+          <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+      </div>
+      <div class="ob-profile-card ripple-wrap" id="cardLocal" onclick="selectProfile('local')">
+        <div class="ob-profile-card-icon local">🏠</div>
+        <div>
+          <div class="ob-profile-card-title">Local</div>
+          <div class="ob-profile-card-sub">Quiero vivir y apoyar mi ciudad.</div>
+        </div>
+        <div class="ob-profile-card-check">
+          <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+      </div>
+    </div>
+    <button class="ob-cta ripple-wrap" onclick="obNext(3)" id="profileCta">Continuar</button>
+  </div>
+
+  <!-- STEP 3: PERMISOS -->
+  <div class="ob-step" id="ob-permisos">
+    <div class="ob-permisos-hero">
+      <button onclick="obNext(2)" style="background:none;border:none;color:rgba(255,255,255,0.7);font-size:13px;font-weight:600;padding:0 0 16px;cursor:pointer;display:flex;align-items:center;gap:6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Atrás
+      </button>
+      <div class="ob-perm-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+      </div>
+      <div class="ob-permisos-title">Activa permisos</div>
+      <div class="ob-permisos-sub">Para mostrarte lo mejor cerca de ti y avisarte eventos importantes.</div>
+    </div>
+    <div class="ob-perm-items">
+      <div class="ob-perm-item">
+        <div class="ob-perm-item-icon loc">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <div>
+          <div class="ob-perm-item-title">Ubicación</div>
+          <div class="ob-perm-item-sub">Muestra lugares y eventos cercanos</div>
+        </div>
+      </div>
+      <div class="ob-perm-item">
+        <div class="ob-perm-item-icon notif">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div>
+          <div class="ob-perm-item-title">Notificaciones</div>
+          <div class="ob-perm-item-sub">Alertas de eventos y logros</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 20px;display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+      <button class="ob-cta ripple-wrap" style="margin:0;width:100%" onclick="obNext(4)">Activar y continuar</button>
+      <button style="background:none;border:none;color:var(--ink-3);font-size:13px;font-weight:600;padding:12px;cursor:pointer;" onclick="obNext(4)">Ahora no</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: GAMIFICATION INTRO -->
+  <div class="ob-step" id="ob-gamif">
+    <div class="ob-gamif-content">
+      <button onclick="obNext(3)" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:13px;font-weight:600;padding:0 0 12px;cursor:pointer;display:flex;align-items:center;gap:6px;align-self:flex-start;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Atrás
+      </button>
+      <div class="ob-gamif-badge">🏆</div>
+      <div class="ob-gamif-title">Explora y gana recompensas</div>
+      <div class="ob-gamif-sub">Cada lugar que visitas te acerca a experiencias únicas con aliados locales.</div>
+      <div class="ob-gamif-list">
+        <div class="ob-gamif-item">
+          <div class="ob-gamif-item-dot" style="background:rgba(0,188,242,0.15);">🗺️</div>
+          <div class="ob-gamif-item-text">Visita lugares y descubre la ciudad</div>
+        </div>
+        <div class="ob-gamif-item">
+          <div class="ob-gamif-item-dot" style="background:rgba(0,25,188,0.2);">🧭</div>
+          <div class="ob-gamif-item-text">Completa rutas curadas y gana puntos</div>
+        </div>
+        <div class="ob-gamif-item">
+          <div class="ob-gamif-item-dot" style="background:rgba(242,183,1,0.2);">⬆️</div>
+          <div class="ob-gamif-item-text">Sube de nivel: Curioso → Embajador</div>
+        </div>
+        <div class="ob-gamif-item">
+          <div class="ob-gamif-item-dot" style="background:rgba(242,183,1,0.15);">🏅</div>
+          <div class="ob-gamif-item-text">Desbloquea insignias bolivarenses</div>
+        </div>
+      </div>
+    </div>
+    <div class="ob-gamif-btns">
+      <button class="ob-btn-primary ripple-wrap" onclick="finishOnboarding()">Empezar ahora</button>
+      <button class="ob-btn-ghost" onclick="finishOnboarding()">Omitir</button>
+    </div>
+  </div>
+
+</div><!-- /ob-overlay -->
+
+
+<!-- ================================================================
+     APP
+     ================================================================ -->
+<div id="app">
+
+  <!-- Android status bar -->
+  <div class="status-bar status-bar--hero" id="statusBar">
+    <span class="sb-time" id="sbTime">12:31</span>
+    <div class="sb-icons">
+      <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+        <rect x="0" y="5" width="2.5" height="6" rx="0.5" fill="white" opacity="0.4"/>
+        <rect x="3.5" y="3.5" width="2.5" height="7.5" rx="0.5" fill="white" opacity="0.65"/>
+        <rect x="7" y="2" width="2.5" height="9" rx="0.5" fill="white" opacity="0.8"/>
+        <rect x="10.5" y="0" width="2.5" height="11" rx="0.5" fill="white"/>
+      </svg>
+      <svg width="14" height="11" viewBox="0 0 16 12" fill="none">
+        <path d="M8 9.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" fill="white"/>
+        <path d="M3.5 6.5A7 7 0 0112.5 6.5" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+        <path d="M1 4A10 10 0 0115 4" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+      </svg>
+      <div class="sb-battery">
+        <div class="sb-battery-body"><div class="sb-battery-fill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREENS -->
+  <div class="screens">
+
+    <!-- =========================================================
+         HOME
+         ========================================================= -->
+    <div class="screen active" id="screen-home" data-statusbar="hero">
+
+      <!-- Hero navy -->
+      <div class="hero">
+        <div class="hero-greeting">
+          <div class="hero-greet-left">
+            <div class="hero-greet-name">Hola, María 👋</div>
+            <div class="hero-greet-sub" id="homeGreetSub">Visitante · Ciudad Bolívar</div>
+          </div>
+          <div class="hero-level-badge">
+            <span>Nv.2</span>
+            <span class="hero-pts-val" id="heroPts">340</span>
+            <span style="color:rgba(255,255,255,0.45);font-size:11px">pts</span>
+          </div>
+        </div>
+
+        <!-- XP progress bar -->
+        <div class="hero-xp">
+          <div class="hero-xp-fill" id="heroXpFill" style="width:36%"></div>
+        </div>
+
+        <!-- Search -->
+        <div class="search-bar">
+          <svg class="sb-icon" viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="7.5"/><path d="m16.5 16.5 3.5 3.5"/></svg>
+          <input type="text" placeholder="¿Qué quieres descubrir hoy?">
+        </div>
+
+        <!-- Category chips -->
+        <div class="hero-chips">
+          <button class="chip ripple-wrap active" onclick="selectChip(this)">
+            <svg viewBox="0 0 24 24"><path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3"/><rect x="9" y="11" width="14" height="10" rx="2"/></svg>
+            Todos
+          </button>
+          <button class="chip ripple-wrap" onclick="selectChip(this)">🍽️ Sabor local</button>
+          <button class="chip ripple-wrap" onclick="selectChip(this)">🏛️ Historia</button>
+          <button class="chip ripple-wrap" onclick="selectChip(this)">🏨 Alojamiento</button>
+          <button class="chip ripple-wrap" onclick="selectChip(this)">🎉 Eventos</button>
+        </div>
+      </div>
+
+      <!-- Ficha destacada patrocinada -->
+      <div class="featured-card ripple-wrap" onclick="openDetail('ruta')">
+        <div class="featured-card-img">
+          <img src="imagenes/casco-historico.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#000D80,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Casco Histórico';this.parentNode.appendChild(d);}" alt="Casco Histórico">
+        </div>
+        <div class="featured-card-scrim"></div>
+        <div class="featured-badge">✨ Destacado</div>
+        <button class="featured-fav" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+        <div class="featured-card-body">
+          <div class="featured-card-cat">Memoria viva · Patrocinado</div>
+          <div class="featured-card-title">Ruta del Casco Histórico</div>
+          <div class="featured-card-sub">Casco Histórico · ★★★★★ · +100 pts</div>
+        </div>
+      </div>
+
+      <!-- Reto activo -->
+      <div class="reto-card ripple-wrap" onclick="toast('¡Reto activado! Visita todos los puntos del casco histórico.',0,'🧭')">
+        <div class="reto-icon">🧭</div>
+        <div class="reto-body">
+          <div class="reto-label">Reto activo</div>
+          <div class="reto-title">Completa la Ruta del Casco Histórico</div>
+          <div class="reto-pts">+100 pts al completar · 3/5 visitados</div>
+        </div>
+        <svg class="reto-arrow" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+
+      <!-- Historia del día -->
+      <div class="historia-card">
+        <div class="historia-inner">
+          <div class="historia-label">Historia del día</div>
+          <div class="historia-text">"Angostura no fue solo el lugar donde se firmó la Constitución de 1819; fue el corazón palpitante de una nación que aprendía a soñarse libre."</div>
+          <div class="historia-author">— Fragmento de crónica bolivarense, 1822</div>
+        </div>
+      </div>
+
+      <!-- Experiencias populares -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Experiencias populares</div>
+          <button class="section-link" onclick="navigate('explore')">Ver todo</button>
+        </div>
+        <div class="exp-scroll">
+
+          <div class="exp-card ripple-wrap" onclick="openDetail('ruta')">
+            <div class="exp-card-img">
+              <img src="imagenes/casco-historico.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#000B6A,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Casco Histórico';this.parentNode.appendChild(d);}" alt="">
+              <span class="cat-badge navy">🏛️ Historia</span>
+              <button class="fav-btn" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+            </div>
+            <div class="exp-card-body">
+              <div class="exp-card-name">Ruta del Casco Histórico</div>
+              <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star off">★</span><span class="pts-lbl">+100 pts</span></div>
+              <div class="exp-card-sub">Casco Histórico</div>
+            </div>
+          </div>
+
+          <div class="exp-card ripple-wrap" onclick="openDetail('gastro')">
+            <div class="exp-card-img">
+              <img src="imagenes/gastronomia-guayanesa.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#8B1A00,#F24135)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Gastronomía del Orinoco';this.parentNode.appendChild(d);}" alt="">
+              <span class="cat-badge ember">🍽️ Gastronomía</span>
+              <button class="fav-btn" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+            </div>
+            <div class="exp-card-body">
+              <div class="exp-card-name">Gastronomía del Orinoco</div>
+              <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="pts-lbl">+25 pts</span></div>
+              <div class="exp-card-sub">Paseo Orinoco</div>
+            </div>
+          </div>
+
+          <div class="exp-card ripple-wrap" onclick="openDetail('museo')">
+            <div class="exp-card-img">
+              <img src="imagenes/cafe-angostura.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#3B1A00,#C87800)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Cafe Angostura';this.parentNode.appendChild(d);}" alt="">
+              <span class="cat-badge sky">☕ Café</span>
+              <button class="fav-btn" onclick="event.stopPropagation();toggleFav(this)">❤️</button>
+            </div>
+            <div class="exp-card-body">
+              <div class="exp-card-name">Café Angostura</div>
+              <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="pts-lbl">+25 pts</span></div>
+              <div class="exp-card-sub">Casco Histórico</div>
+            </div>
+          </div>
+
+          <div class="exp-card ripple-wrap" onclick="openDetail('posada')">
+            <div class="exp-card-img">
+              <img src="imagenes/posada-colonial.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#0A2040,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Posada Colonial';this.parentNode.appendChild(d);}" alt="">
+              <span class="cat-badge gold">🏨 Posada</span>
+              <button class="fav-btn" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+            </div>
+            <div class="exp-card-body">
+              <div class="exp-card-name">Posada Colonial</div>
+              <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star off">★</span><span class="pts-lbl">+10 pts</span></div>
+              <div class="exp-card-sub">Calle Bolívar</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Próximos eventos -->
+      <div class="section">
+        <div class="section-header">
+          <div class="section-title">Próximos eventos</div>
+          <button class="section-link" onclick="navigate('eventos')">Ver agenda</button>
+        </div>
+        <div class="ev-mini-scroll">
+
+          <div class="ev-mini-card ripple-wrap" onclick="navigate('eventos')">
+            <div class="ev-mini-img">
+              <img src="imagenes/feria-sapoara.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#6B0020,#F24135)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Festival Sapoara';this.parentNode.appendChild(d);}" alt="">
+              <span class="ev-mini-date">28 ABR</span>
+            </div>
+            <div class="ev-mini-body">
+              <div class="ev-mini-name">Festival del Sapoara</div>
+              <div class="ev-mini-sub">Gastronomía · +50 pts</div>
+            </div>
+          </div>
+
+          <div class="ev-mini-card ripple-wrap" onclick="navigate('eventos')">
+            <div class="ev-mini-img">
+              <img src="imagenes/museo-soto.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#080A18,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Museo Soto';this.parentNode.appendChild(d);}" alt="">
+              <span class="ev-mini-date">03 MAY</span>
+            </div>
+            <div class="ev-mini-body">
+              <div class="ev-mini-name">Noche de Museos</div>
+              <div class="ev-mini-sub">Cultural · +50 pts</div>
+            </div>
+          </div>
+
+          <div class="ev-mini-card ripple-wrap" onclick="navigate('eventos')">
+            <div class="ev-mini-img">
+              <img src="imagenes/paseo-orinoco.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#003040,#00BCF2)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Paseo Orinoco';this.parentNode.appendChild(d);}" alt="">
+              <span class="ev-mini-date">10 MAY</span>
+            </div>
+            <div class="ev-mini-body">
+              <div class="ev-mini-name">Feria de Artesanías</div>
+              <div class="ev-mini-sub">Cultura · +50 pts</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Recomendaciones grid -->
+      <div class="section-end">
+        <div class="section-header">
+          <div class="section-title">Recomendaciones</div>
+        </div>
+        <div class="rec-grid">
+          <div class="rec-card ripple-wrap" onclick="openDetail('boutique')">
+            <div class="rec-card-img">
+              <img src="imagenes/museo-soto.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#001A3A,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Museo Soto';this.parentNode.appendChild(d);}" alt="">
+              <button class="fav-btn" style="width:26px;height:26px;font-size:12px;top:6px;right:6px" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+            </div>
+            <div class="rec-card-body">
+              <div class="rec-card-name">Museo Jesús Soto</div>
+              <div class="rec-card-pts">★★★★★ · +100 pts</div>
+              <div class="rec-card-addr">Av. Germania</div>
+            </div>
+          </div>
+          <div class="rec-card ripple-wrap" onclick="openDetail('museo')">
+            <div class="rec-card-img">
+              <img src="imagenes/cafe-angostura.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#3B1A00,#C87800)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Café Angostura';this.parentNode.appendChild(d);}" alt="">
+              <button class="fav-btn" style="width:26px;height:26px;font-size:12px;top:6px;right:6px" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+            </div>
+            <div class="rec-card-body">
+              <div class="rec-card-name">Café Angostura</div>
+              <div class="rec-card-pts">★★★★★ · +25 pts</div>
+              <div class="rec-card-addr">Casco Histórico</div>
+            </div>
+          </div>
+          <div class="rec-card ripple-wrap" onclick="openDetail('artesanias')">
+            <div class="rec-card-img">
+              <img src="imagenes/puente-angostura.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#000B6A,#00BCF2)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Puente Angostura';this.parentNode.appendChild(d);}" alt="">
+              <button class="fav-btn" style="width:26px;height:26px;font-size:12px;top:6px;right:6px" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+            </div>
+            <div class="rec-card-body">
+              <div class="rec-card-name">Puente Angostura</div>
+              <div class="rec-card-pts">★★★☆☆ · +25 pts</div>
+              <div class="rec-card-addr">Paseo Orinoco</div>
+            </div>
+          </div>
+          <div class="rec-card ripple-wrap" onclick="openDetail('posada')">
+            <div class="rec-card-img">
+              <img src="imagenes/posada-colonial.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#0A2040,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Posada Colonial';this.parentNode.appendChild(d);}" alt="">
+              <button class="fav-btn" style="width:26px;height:26px;font-size:12px;top:6px;right:6px" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+            </div>
+            <div class="rec-card-body">
+              <div class="rec-card-name">Posada Colonial</div>
+              <div class="rec-card-pts">★★★★☆ · +10 pts</div>
+              <div class="rec-card-addr">Calle Bolívar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pb-safe"></div>
+    </div><!-- /home -->
+
+
+    <!-- =========================================================
+         EXPLORAR
+         ========================================================= -->
+    <div class="screen" id="screen-explore" data-statusbar="hero">
+
+      <div class="explore-hero">
+        <div class="explore-search">
+          <svg style="width:17px;height:17px;flex-shrink:0;stroke:var(--ink-3);fill:none;stroke-width:2.3;stroke-linecap:round" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7.5"/><path d="m16.5 16.5 3.5 3.5"/>
+          </svg>
+          <input type="text" placeholder="Buscar lugares, rutas, cultura..." id="exploreInput">
+        </div>
+        <div class="explore-cats">
+          <button class="ecat ripple-wrap active" onclick="selectEcat(this,'Todos')">🗺️ Todos</button>
+          <button class="ecat ripple-wrap" onclick="selectEcat(this,'Sabor local')">🍽️ Sabor local</button>
+          <button class="ecat ripple-wrap" onclick="selectEcat(this,'Memoria viva')">🏛️ Memoria viva</button>
+          <button class="ecat ripple-wrap" onclick="selectEcat(this,'Alojamiento')">🏨 Alojamiento</button>
+          <button class="ecat ripple-wrap" onclick="selectEcat(this,'Servicios')">🚑 Servicios</button>
+          <button class="ecat ripple-wrap" onclick="selectEcat(this,'Rutas')">🧭 Rutas</button>
+        </div>
+      </div>
+
+      <div class="explore-view-bar">
+        <span class="explore-meta" id="exploreMeta">Todos — 24 lugares</span>
+        <div class="view-toggle">
+          <button class="view-btn active" id="viewMap" onclick="setView('map')">
+            <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            Mapa
+          </button>
+          <button class="view-btn" id="viewList" onclick="setView('list')">
+            <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            Lista
+          </button>
+        </div>
+      </div>
+
+      <!-- Map view -->
+      <div id="mapView">
+        <div class="map-placeholder">
+          <div class="map-grid"></div>
+          <!-- Streets -->
+          <div class="map-street-h" style="top:45%;"></div>
+          <div class="map-street-h" style="top:65%;height:3px;opacity:0.4"></div>
+          <div class="map-street-v" style="left:35%;"></div>
+          <div class="map-street-v" style="left:68%;opacity:0.5"></div>
+          <!-- You are here -->
+          <div class="map-you" style="position:absolute;left:35%;top:45%;transform:translate(-50%,-50%)"></div>
+          <!-- Pins -->
+          <div class="map-pin ripple-wrap" style="left:52%;top:35%;" onclick="openDetail('ruta')">
+            <div class="map-pin-dot navy">🏛️</div>
+            <div class="map-pin-lbl">Casco Histórico</div>
+          </div>
+          <div class="map-pin ripple-wrap" style="left:28%;top:52%;" onclick="openDetail('gastro')">
+            <div class="map-pin-dot gold">🍽️</div>
+            <div class="map-pin-lbl">Gastronomía</div>
+          </div>
+          <div class="map-pin ripple-wrap" style="left:70%;top:58%;" onclick="openDetail('posada')">
+            <div class="map-pin-dot ember">🏨</div>
+            <div class="map-pin-lbl">Posadas</div>
+          </div>
+          <div class="map-pin ripple-wrap" style="left:60%;top:75%;" onclick="openDetail('museo')">
+            <div class="map-pin-dot sky">☕</div>
+            <div class="map-pin-lbl">Café</div>
+          </div>
+          <div class="map-recenter">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </div>
+        </div>
+
+        <!-- Quick suggestions below map -->
+        <div class="section" style="padding-top:16px;">
+          <div class="section-header">
+            <div class="section-title">Cerca de ti</div>
+          </div>
+          <div class="exp-scroll">
+            <div class="exp-card ripple-wrap" onclick="openDetail('ruta')">
+              <div class="exp-card-img">
+                <img src="imagenes/puente-angostura.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#000B6A,#00BCF2)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Puente Angostura';this.parentNode.appendChild(d);}" alt="">
+                <span class="cat-badge navy">🏛️</span>
+              </div>
+              <div class="exp-card-body">
+                <div class="exp-card-name">Ruta Histórica</div>
+                <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star off">★</span></div>
+                <div class="exp-card-sub">200m · +100 pts</div>
+              </div>
+            </div>
+            <div class="exp-card ripple-wrap" onclick="openDetail('museo')">
+              <div class="exp-card-img">
+                <img src="imagenes/cafe-angostura.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#3B1A00,#C87800)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Cafe Angostura';this.parentNode.appendChild(d);}" alt="">
+                <span class="cat-badge sky">☕</span>
+              </div>
+              <div class="exp-card-body">
+                <div class="exp-card-name">Café Angostura</div>
+                <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                <div class="exp-card-sub">350m · +25 pts</div>
+              </div>
+            </div>
+            <div class="exp-card ripple-wrap" onclick="openDetail('artesanias')">
+              <div class="exp-card-img">
+                <img src="imagenes/paseo-orinoco.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#5C3200,#F2B701)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Artesanias Orinoco';this.parentNode.appendChild(d);}" alt="">
+                <span class="cat-badge ember">🎨</span>
+              </div>
+              <div class="exp-card-body">
+                <div class="exp-card-name">Artesanías</div>
+                <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star off">★</span><span class="star off">★</span></div>
+                <div class="exp-card-sub">500m · +25 pts</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- List view (hidden by default) -->
+      <div id="listView" style="display:none;">
+        <div class="place-list">
+          <div class="place-item ripple-wrap" onclick="openDetail('ruta')">
+            <div class="place-item-img">
+              <img src="imagenes/puente-angostura.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#000B6A,#00BCF2)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Puente Angostura';this.parentNode.appendChild(d);}" alt="">
+              <span class="cat-badge navy" style="top:10px;left:10px">🏛️ Memoria viva</span>
+              <button class="fav-btn" style="top:10px;right:10px" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+            </div>
+            <div class="place-item-body">
+              <div class="place-item-name">Ruta del Casco Histórico</div>
+              <div class="place-item-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star off">★</span><span class="pts-lbl">+100 pts</span></div>
+              <div class="place-item-addr">Casco Histórico · 200m</div>
+            </div>
+          </div>
+          <div class="place-item ripple-wrap" onclick="openDetail('gastro')">
+            <div class="place-item-img">
+              <img src="imagenes/gastronomia-guayanesa.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#8B1A00,#F24135)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Gastronomia Guayanesa';this.parentNode.appendChild(d);}" alt="">
+              <span class="cat-badge ember" style="top:10px;left:10px">🍽️ Sabor local</span>
+              <button class="fav-btn" style="top:10px;right:10px" onclick="event.stopPropagation();toggleFav(this)">❤️</button>
+            </div>
+            <div class="place-item-body">
+              <div class="place-item-name">Gastronomía del Orinoco</div>
+              <div class="place-item-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="pts-lbl">+25 pts</span></div>
+              <div class="place-item-addr">Paseo Orinoco · 450m</div>
+            </div>
+          </div>
+          <div class="place-item ripple-wrap" onclick="openDetail('posada')">
+            <div class="place-item-img">
+              <img src="imagenes/posada-colonial.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#0A2040,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Posada Colonial';this.parentNode.appendChild(d);}" alt="">
+              <button class="fav-btn" style="top:10px;right:10px" onclick="event.stopPropagation();toggleFav(this)">🤍</button>
+            </div>
+            <div class="place-item-body">
+              <div class="place-item-name">Posada Colonial</div>
+              <div class="place-item-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star off">★</span><span class="pts-lbl">+10 pts</span></div>
+              <div class="place-item-addr">Calle Bolívar · 600m</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pb-safe"></div>
+    </div><!-- /explore -->
+
+
+    <!-- =========================================================
+         EVENTOS
+         ========================================================= -->
+    <div class="screen" id="screen-eventos" data-statusbar="hero">
+
+      <div class="eventos-hero">
+        <div class="eventos-hero-title">Agenda Cultural</div>
+        <div class="eventos-hero-sub">Abril — Mayo 2025 · Ciudad Bolívar</div>
+        <div class="eventos-filter-row">
+          <button class="ev-filter active ripple-wrap" onclick="selectEvFilter(this)">Todos</button>
+          <button class="ev-filter ripple-wrap" onclick="selectEvFilter(this)">🍽️ Gastronómico</button>
+          <button class="ev-filter ripple-wrap" onclick="selectEvFilter(this)">🏛️ Cultural</button>
+          <button class="ev-filter ripple-wrap" onclick="selectEvFilter(this)">🎪 Ferias</button>
+          <button class="ev-filter ripple-wrap" onclick="selectEvFilter(this)">🎵 Música</button>
+        </div>
+      </div>
+
+      <div class="ev-list" style="padding-top:20px;">
+
+        <!-- Evento destacado patrocinado -->
+        <div class="ev-card ripple-wrap" onclick="toast('¡Evento guardado!',0,'📅')">
+          <div class="ev-card-img">
+            <img src="imagenes/feria-sapoara.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#6B0020,#F24135)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Festival Sapoara';this.parentNode.appendChild(d);}" alt="">
+            <span class="ev-date-badge">28 ABR · 6:00 PM</span>
+            <span class="ev-destac-badge">✨ Destacado</span>
+          </div>
+          <div class="ev-card-body">
+            <div class="ev-card-cat">Gastronómico · Patrocinado</div>
+            <div class="ev-card-title">Festival del Sapoara 2025</div>
+            <div class="ev-card-meta">📍 Paseo Orinoco · Entrada libre</div>
+            <div class="ev-card-footer">
+              <div class="ev-pts-pill">⭐ +50 pts por asistir</div>
+              <button class="ev-asistir-btn ripple-wrap" id="ev-asistir-0" onclick="event.stopPropagation();attendEvent(this)">Asistir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ev-card ripple-wrap" onclick="toast('¡Evento guardado!',0,'📅')">
+          <div class="ev-card-img">
+            <img src="imagenes/museo-soto.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#080A18,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Museo Soto';this.parentNode.appendChild(d);}" alt="">
+            <span class="ev-date-badge">03 MAY · 7:00 PM</span>
+          </div>
+          <div class="ev-card-body">
+            <div class="ev-card-cat">Cultural</div>
+            <div class="ev-card-title">Noche de Museos: Arte del Orinoco</div>
+            <div class="ev-card-meta">📍 Museo de Arte Moderno · Entrada libre</div>
+            <div class="ev-card-footer">
+              <div class="ev-pts-pill">⭐ +50 pts por asistir</div>
+              <button class="ev-asistir-btn ripple-wrap" id="ev-asistir-1" onclick="event.stopPropagation();attendEvent(this)">Asistir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ev-card ripple-wrap" onclick="toast('¡Evento guardado!',0,'📅')">
+          <div class="ev-card-img">
+            <img src="imagenes/paseo-orinoco.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#003040,#00BCF2)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Paseo Orinoco';this.parentNode.appendChild(d);}" alt="">
+            <span class="ev-date-badge">10 MAY · 9:00 AM</span>
+          </div>
+          <div class="ev-card-body">
+            <div class="ev-card-cat">Ferias y mercados</div>
+            <div class="ev-card-title">Feria de Artesanías Bolivarenses</div>
+            <div class="ev-card-meta">📍 Plaza Bolívar · Todo el día</div>
+            <div class="ev-card-footer">
+              <div class="ev-pts-pill">⭐ +50 pts por asistir</div>
+              <button class="ev-asistir-btn ripple-wrap" id="ev-asistir-2" onclick="event.stopPropagation();attendEvent(this)">Asistir</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ev-card ripple-wrap" onclick="toast('¡Evento guardado!',0,'📅')">
+          <div class="ev-card-img">
+            <img src="imagenes/atardecer-orinoco.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#1A0040,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Atardecer Orinoco';this.parentNode.appendChild(d);}" alt="">
+            <span class="ev-date-badge">17 MAY · 8:00 PM</span>
+          </div>
+          <div class="ev-card-body">
+            <div class="ev-card-cat">Música y folklore</div>
+            <div class="ev-card-title">Serenata al Orinoco</div>
+            <div class="ev-card-meta">📍 Parque La Alameda · Entrada libre</div>
+            <div class="ev-card-footer">
+              <div class="ev-pts-pill">⭐ +50 pts por asistir</div>
+              <button class="ev-asistir-btn ripple-wrap" id="ev-asistir-3" onclick="event.stopPropagation();attendEvent(this)">Asistir</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="pb-safe"></div>
+    </div><!-- /eventos -->
+
+
+    <!-- =========================================================
+         FAVORITOS
+         ========================================================= -->
+    <div class="screen" id="screen-favoritos" data-statusbar="hero">
+
+      <div class="fav-hero">
+        <div class="fav-hero-title">Mis favoritos</div>
+        <div class="fav-tabs">
+          <button class="fav-tab-btn active" id="favTabLugares" onclick="setFavTab('lugares')">Lugares</button>
+          <button class="fav-tab-btn" id="favTabRutas" onclick="setFavTab('rutas')">Rutas</button>
+          <button class="fav-tab-btn" id="favTabEventos" onclick="setFavTab('fevents')">Eventos</button>
+        </div>
+      </div>
+
+      <div class="fav-content" style="padding-top:16px;">
+
+        <!-- Lugares guardados -->
+        <div class="fav-section active" id="fav-section-lugares">
+          <div class="fav-item ripple-wrap" onclick="openDetail('museo')">
+            <div class="fav-item-img"><img src="imagenes/cafe-angostura.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#3B1A00,#C87800)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Cafe Angostura';this.parentNode.appendChild(d);}" alt=""></div>
+            <div class="fav-item-body">
+              <div class="fav-item-name">Café Angostura</div>
+              <div class="fav-item-sub">☕ Sabor local · Casco Histórico</div>
+              <div class="offline-pill">📴 Disponible offline</div>
+            </div>
+            <button class="fav-item-remove" onclick="event.stopPropagation();toast('Eliminado de favoritos',0,'💔')">❤️</button>
+          </div>
+          <div class="fav-item ripple-wrap" onclick="openDetail('gastro')">
+            <div class="fav-item-img"><img src="imagenes/gastronomia-guayanesa.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#8B1A00,#F24135)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Gastronomia Guayanesa';this.parentNode.appendChild(d);}" alt=""></div>
+            <div class="fav-item-body">
+              <div class="fav-item-name">Gastronomía del Orinoco</div>
+              <div class="fav-item-sub">🍽️ Sabor local · Paseo Orinoco</div>
+            </div>
+            <button class="fav-item-remove" onclick="event.stopPropagation();toast('Eliminado de favoritos',0,'💔')">❤️</button>
+          </div>
+          <div class="fav-item ripple-wrap" onclick="openDetail('boutique')">
+            <div class="fav-item-img"><img src="imagenes/museo-soto.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#001A3A,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Museo Soto';this.parentNode.appendChild(d);}" alt=""></div>
+            <div class="fav-item-body">
+              <div class="fav-item-name">Museo Jesús Soto</div>
+              <div class="fav-item-sub">🏛️ Memoria viva · Av. Germania</div>
+            </div>
+            <button class="fav-item-remove" onclick="event.stopPropagation();toast('Eliminado de favoritos',0,'💔')">❤️</button>
+          </div>
+        </div>
+
+        <!-- Rutas guardadas -->
+        <div class="fav-section" id="fav-section-rutas">
+          <div class="fav-item ripple-wrap" onclick="openDetail('ruta')">
+            <div class="fav-item-img"><img src="imagenes/puente-angostura.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#000B6A,#00BCF2)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Puente Angostura';this.parentNode.appendChild(d);}" alt=""></div>
+            <div class="fav-item-body">
+              <div class="fav-item-name">Ruta del Casco Histórico</div>
+              <div class="fav-item-sub">🧭 5 paradas · 2.3km</div>
+              <div class="route-progress">
+                <div class="route-progress-lbl">3 de 5 puntos visitados</div>
+                <div class="route-progress-bar"><div class="route-progress-fill" style="width:60%"></div></div>
+              </div>
+            </div>
+            <button class="fav-item-remove" onclick="event.stopPropagation();toast('Ruta eliminada',0,'💔')">❤️</button>
+          </div>
+          <div class="fav-item ripple-wrap" onclick="toast('Ruta abierta',0,'🧭')">
+            <div class="fav-item-img"><img src="imagenes/paseo-orinoco.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#5C3200,#F2B701)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Artesanias Orinoco';this.parentNode.appendChild(d);}" alt=""></div>
+            <div class="fav-item-body">
+              <div class="fav-item-name">Circuito del Orinoco</div>
+              <div class="fav-item-sub">🧭 4 paradas · 3.1km</div>
+              <div class="route-progress">
+                <div class="route-progress-lbl">0 de 4 puntos visitados</div>
+                <div class="route-progress-bar"><div class="route-progress-fill" style="width:0%"></div></div>
+              </div>
+            </div>
+            <button class="fav-item-remove" onclick="event.stopPropagation();toast('Ruta eliminada',0,'💔')">❤️</button>
+          </div>
+        </div>
+
+        <!-- Eventos guardados -->
+        <div class="fav-section" id="fav-section-fevents">
+          <div class="fav-item ripple-wrap" onclick="navigate('eventos')">
+            <div class="fav-item-img"><img src="imagenes/feria-sapoara.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#6B0020,#F24135)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Festival Sapoara';this.parentNode.appendChild(d);}" alt=""></div>
+            <div class="fav-item-body">
+              <div class="fav-item-name">Festival del Sapoara</div>
+              <div class="fav-item-sub">🍽️ 28 Abr · Paseo Orinoco</div>
+            </div>
+            <button class="fav-item-remove" onclick="event.stopPropagation();toast('Evento eliminado',0,'💔')">❤️</button>
+          </div>
+          <div class="empty-state" style="padding-top:24px">
+            <div style="font-size:36px;margin-bottom:10px">📅</div>
+            <div style="font-size:14px;color:var(--ink-3);">Guarda más eventos para no perderte nada</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="pb-safe"></div>
+    </div><!-- /favoritos -->
+
+
+    <!-- =========================================================
+         PERFIL / MI EXPLORADOR
+         ========================================================= -->
+    <div class="screen" id="screen-perfil" data-statusbar="hero">
+
+      <div class="profile-hero">
+        <div class="profile-top">
+          <img class="profile-avatar" src="imagenes/avatar-maria.webp" onerror="this.onerror=null;this.style.background='#0019BC';this.style.borderRadius='50%';this.removeAttribute('src');" alt="María González">
+          <div>
+            <div class="profile-name">María González</div>
+            <span class="profile-tag">🧳 Visitante</span>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div class="p-stat">
+            <div class="p-stat-val" id="ptsVal">340</div>
+            <div class="p-stat-lbl">Puntos</div>
+          </div>
+          <div class="p-stat">
+            <div class="p-stat-val" id="revVal">3</div>
+            <div class="p-stat-lbl">Reseñas</div>
+          </div>
+          <div class="p-stat">
+            <div class="p-stat-val" id="savVal">5</div>
+            <div class="p-stat-lbl">Guardados</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Level card -->
+      <div class="level-card">
+        <div class="level-card-top">
+          <div>
+            <div class="level-card-title">Mi nivel explorador</div>
+            <div class="level-card-sub" id="levelCardSub">Nivel 2 · Exploradora</div>
+          </div>
+          <div class="level-circle"><span class="level-num" id="levelNum">2</span></div>
+        </div>
+        <div class="xp-labels">
+          <span class="xp-cur" id="xpCur">340 pts</span>
+          <span class="xp-nxt" id="xpNxt">750 → Guardián</span>
+        </div>
+        <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:18%"></div></div>
+        <div class="xp-hint" id="xpHint">Faltan 410 pts para ser Guardián</div>
+        <div class="level-rungs">
+          <div class="rung done"><div class="rung-n">1</div><div class="rung-l">Curioso</div></div>
+          <div class="rung curr"><div class="rung-n">2</div><div class="rung-l">Explorador</div></div>
+          <div class="rung"><div class="rung-n">3</div><div class="rung-l">Guardián</div></div>
+          <div class="rung"><div class="rung-n">4</div><div class="rung-l">Embajador</div></div>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="badges-section">
+        <div class="section-header">
+          <div class="section-title">Insignias</div>
+          <span style="font-size:12px;color:var(--ink-3)">1 de 6 desbloqueadas</span>
+        </div>
+        <div class="badge-scroll">
+          <div class="badge-card unlocked">
+            <div class="badge-icon">📢</div>
+            <div class="badge-name">Voz de la Ciudad</div>
+          </div>
+          <div class="badge-card locked">
+            <div class="badge-icon">🍽️</div>
+            <div class="badge-name">Catador del Sapoara</div>
+            <div class="badge-bar"><div class="badge-fill" style="width:60%"></div></div>
+          </div>
+          <div class="badge-card locked">
+            <div class="badge-icon">🏛️</div>
+            <div class="badge-name">Guardián del Patrimonio</div>
+            <div class="badge-bar"><div class="badge-fill" style="width:15%"></div></div>
+          </div>
+          <div class="badge-card locked">
+            <div class="badge-icon">🧭</div>
+            <div class="badge-name">Explorador 360</div>
+            <div class="badge-bar"><div class="badge-fill" style="width:80%"></div></div>
+          </div>
+          <div class="badge-card locked">
+            <div class="badge-icon">📝</div>
+            <div class="badge-name">Cronista Bolivarense</div>
+            <div class="badge-bar"><div class="badge-fill" style="width:30%"></div></div>
+          </div>
+          <div class="badge-card locked">
+            <div class="badge-icon">🎉</div>
+            <div class="badge-name">Alma Festiva</div>
+            <div class="badge-bar"><div class="badge-fill" style="width:33%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rewards -->
+      <div class="rewards-section">
+        <div class="section-header">
+          <div class="section-title">Recompensas canjeables</div>
+        </div>
+
+        <div class="rew-item ripple-wrap disabled" onclick="redeemReward(this,100)">
+          <span class="rew-icon">☕</span>
+          <div class="rew-info">
+            <div class="rew-title">Café de cortesía</div>
+            <div class="rew-ally">Café del Puente</div>
+          </div>
+          <div class="rew-right">
+            <div class="rew-pts">100 pts</div>
+            <div class="rew-ok">Canjeado ✓</div>
+          </div>
+        </div>
+
+        <div class="rew-item ripple-wrap" onclick="redeemReward(this,250)">
+          <span class="rew-icon">🏨</span>
+          <div class="rew-info">
+            <div class="rew-title">10% descuento alojamiento</div>
+            <div class="rew-ally">Hotel La Muralla</div>
+          </div>
+          <div class="rew-right">
+            <div class="rew-pts">250 pts</div>
+            <div class="rew-off rew-ok" id="rewOff1">Faltan 90 pts</div>
+          </div>
+        </div>
+
+        <div class="rew-item disabled">
+          <span class="rew-icon">🧭</span>
+          <div class="rew-info">
+            <div class="rew-title">Tour guiado gratuito</div>
+            <div class="rew-ally">Bolívar 360 Tours</div>
+          </div>
+          <div class="rew-right">
+            <div class="rew-pts">500 pts</div>
+            <div class="rew-off">Nivel 3 requerido</div>
+          </div>
+        </div>
+
+        <div class="rew-item disabled">
+          <span class="rew-icon">✨</span>
+          <div class="rew-info">
+            <div class="rew-title">Experiencia exclusiva</div>
+            <div class="rew-ally">Cena · Taller · Orinoco</div>
+          </div>
+          <div class="rew-right">
+            <div class="rew-pts">1.000 pts</div>
+            <div class="rew-off">Nivel 4 requerido</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div><!-- /perfil -->
+
+
+    <!-- =========================================================
+         DETAIL — Ficha
+         ========================================================= -->
+    <div class="screen" id="screen-detail" data-statusbar="trans">
+
+      <div class="detail-hero">
+        <img id="detailImg" src="imagenes/puente-angostura.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#000B6A,#00BCF2)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Puente Angostura';this.parentNode.appendChild(d);}" alt="">
+        <div class="detail-hero-scrim"></div>
+        <div class="detail-appbar">
+          <button class="detail-back ripple-wrap" onclick="goBack()">
+            <svg fill="none" viewBox="0 0 24 24" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <path d="M19 12H5M12 5l-7 7 7 7"/>
+            </svg>
+          </button>
+          <button class="detail-fav" id="detailFavBtn" onclick="toggleFav(this)">🤍</button>
+        </div>
+      </div>
+
+      <div class="detail-body">
+        <div class="detail-overline" id="detailCat">Historia</div>
+        <div class="detail-title" id="detailTitle">Ruta del Casco Histórico</div>
+        <div class="detail-rating-row">
+          <span style="color:var(--gold);font-size:16px">★★★★</span>
+          <span style="color:var(--bg-3);font-size:16px">★</span>
+          <span class="detail-rating-pts">4.2 · 128 reseñas · +100 pts</span>
+        </div>
+        <div class="detail-info">
+          <div class="detail-info-row"><span class="dil">Contacto:</span><span id="detailContact">(+58) 412.234.7898</span></div>
+          <div class="detail-info-row"><span class="dil">Dirección:</span><span id="detailAddr">Casco Histórico, Ciudad Bolívar, Estado Bolívar</span></div>
+        </div>
+        <div class="detail-desc" id="detailDesc">
+          Museos y monumentos del cuadrilátero histórico. Esta ruta te lleva por los rincones más emblemáticos de la antigua Angostura, donde cada calle guarda siglos de historia venezolana.
+        </div>
+        <div class="gallery">
+          <img src="imagenes/puente-angostura.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#000B6A,#00BCF2)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Puente Angostura';this.parentNode.appendChild(d);}" alt="">
+          <img src="imagenes/cafe-angostura.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#3B1A00,#C87800)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Café Angostura';this.parentNode.appendChild(d);}" alt="">
+          <img src="imagenes/museo-soto.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#080A18,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Museo Soto';this.parentNode.appendChild(d);}" alt="">
+          <img src="imagenes/casco-historico.webp" onerror="this.style.display='none';this.parentNode.style.background='linear-gradient(135deg,#0A2040,#0019BC)';if(!this.parentNode.querySelector('.b360-ph')){var d=document.createElement('span');d.className='b360-ph';d.textContent='Casco Histórico';this.parentNode.appendChild(d);}" alt="">
+        </div>
+      </div>
+
+      <div class="full-divider"></div>
+
+      <div class="review-wrap">
+        <div class="review-header">
+          <span class="review-title">Tu reseña</span>
+          <span class="review-pts">+25 pts · +10 con foto</span>
+        </div>
+        <div class="r-stars" id="rStarsRow">
+          <button class="r-star" onclick="setRating(1)">☆</button>
+          <button class="r-star" onclick="setRating(2)">☆</button>
+          <button class="r-star" onclick="setRating(3)">☆</button>
+          <button class="r-star" onclick="setRating(4)">☆</button>
+          <button class="r-star" onclick="setRating(5)">☆</button>
+        </div>
+        <textarea class="r-textarea" id="reviewText" placeholder="Comparte tu experiencia (mínimo 30 caracteres)..."></textarea>
+        <button class="btn-primary ripple-wrap" onclick="submitReview()">Publicar reseña</button>
+        <div class="share-row" style="margin-top:16px">
+          Compartir
+          <button class="share-icon ripple-wrap" onclick="toast('Enlace copiado',15,'📤')">📷</button>
+          <button class="share-icon ripple-wrap" onclick="toast('Compartido en redes',15,'📤')">👍</button>
+          <button class="share-icon ripple-wrap" onclick="toast('Link copiado',15,'🔗')">🔗</button>
+        </div>
+      </div>
+
+      <div class="pb-safe"></div>
+    </div><!-- /detail -->
+
+  </div><!-- /screens -->
+
+
+  <!-- BOTTOM TAB BAR -->
+  <nav class="tab-bar" role="navigation">
+
+    <button class="tab-item ripple-wrap active" id="tab-home" onclick="navigate('home')">
+      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V21a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 22V12h6v10"/></svg>
+      <span>Home</span>
+    </button>
+
+    <button class="tab-item ripple-wrap" id="tab-explore" onclick="navigate('explore')">
+      <svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      <span>Explorar</span>
+    </button>
+
+    <button class="tab-item ripple-wrap" id="tab-eventos" onclick="navigate('eventos')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <span>Eventos</span>
+    </button>
+
+    <button class="tab-item ripple-wrap" id="tab-favoritos" onclick="navigate('favoritos')">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span>Favoritos</span>
+    </button>
+
+    <button class="tab-item ripple-wrap" id="tab-perfil" onclick="navigate('perfil')">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Perfil</span>
+    </button>
+
+  </nav>
+
+</div><!-- /app -->
+
+
+<!-- ================================================================
+     JAVASCRIPT
+     ================================================================ -->
+<script>
+'use strict';
+
+/* ----------------------------------------------------------------
+   APP STATE
+   ---------------------------------------------------------------- */
+const state = {
+  pts:       340,
+  reviews:   3,
+  saved:     5,
+  rating:    0,
+  dark:      false,
+  history:   [],
+  activeTab: 'home',
+  userProfile: 'visitante',
+  toastTimer: null,
+  slideIndex: 0,
+  obStep: 0,
+};
+
+/* ----------------------------------------------------------------
+   PLACE DATA
+   ---------------------------------------------------------------- */
+const places = {
+  gastro:     { title:'Gastronomía del Orinoco',    cat:'Sabor local',    img:'imagenes/gastronomia-guayanesa.webp', contact:'(+58) 285.456.7890', addr:'Paseo Orinoco, Ciudad Bolívar',       desc:'Del Sapoara hasta las nuevas propuestas gourmet. La gastronomía bolivarense es un viaje sensorial que combina la tradición llanera con la riqueza del Orinoco.' },
+  ruta:       { title:'Ruta del Casco Histórico',   cat:'Memoria viva',   img:'imagenes/casco-historico.webp',       contact:'(+58) 412.234.7898', addr:'Casco Histórico, Ciudad Bolívar',     desc:'Museos y monumentos del cuadrilátero histórico. Esta ruta te lleva por los rincones más emblemáticos de la antigua Angostura.' },
+  boutique:   { title:'Museo Jesús Soto',           cat:'Memoria viva',   img:'imagenes/museo-soto.webp',            contact:'(+58) 285.123.4567', addr:'Avenida Germania, Ciudad Bolívar',    desc:'El Museo de Arte Moderno Jesús Soto es uno de los museos más importantes de Venezuela, con obras de Soto y artistas cinéticos de talla mundial.' },
+  museo:      { title:'Café Angostura',             cat:'Sabor local',    img:'imagenes/cafe-angostura.webp',        contact:'(+58) 285.765.4321', addr:'Casco Histórico, Ciudad Bolívar',     desc:'El café bolivarense con más historia. Arte venezolano contemporáneo y lo mejor del sabor local en un espacio de patrimonio.' },
+  posada:     { title:'Posada Colonial',            cat:'Alojamiento',    img:'imagenes/posada-colonial.webp',       contact:'(+58) 285.987.6543', addr:'Calle Bolívar #12, Casco Histórico', desc:'Enclavada en el corazón del casco histórico, esta posada ofrece una experiencia auténtica con vista al Orinoco.' },
+  artesanias: { title:'Puente de Angostura',        cat:'Memoria viva',   img:'imagenes/puente-angostura.webp',     contact:'(+58) 412.111.2233', addr:'Paseo Orinoco, Ciudad Bolívar',       desc:'El Puente Angostura es el mayor símbolo de Ciudad Bolívar: una obra de ingeniería que une el estado con el resto del país sobre el majestuoso río Orinoco.' },
+};
+
+/* ----------------------------------------------------------------
+   NAVIGATION
+   ---------------------------------------------------------------- */
+const screenMap = {
+  home:'screen-home', explore:'screen-explore',
+  eventos:'screen-eventos', favoritos:'screen-favoritos',
+  perfil:'screen-perfil', detail:'screen-detail',
+};
+const tabMap = {
+  home:'tab-home', explore:'tab-explore',
+  eventos:'tab-eventos', favoritos:'tab-favoritos',
+  perfil:'tab-perfil',
+};
+
+function navigate(name) {
+  if (name === state.activeTab && name !== 'detail') return;
+
+  const prev = document.getElementById(screenMap[state.activeTab]);
+  const next = document.getElementById(screenMap[name]);
+  if (!next) return;
+
+  const isDeep = (name === 'detail');
+
+  if (prev && prev !== next) {
+    prev.classList.remove('active');
+    if (isDeep) {
+      prev.classList.add('leaving');
+      setTimeout(() => prev.classList.remove('leaving'), 380);
+    }
+  }
+
+  next.classList.add('active');
+  next.scrollTop = 0;
+
+  updateStatusBar(next.dataset.statusbar);
+
+  const tabName = name in tabMap ? name : 'home';
+  setActiveTab(tabName);
+
+  if (name !== 'detail') state.history = [];
+  if (isDeep) state.history.push(state.activeTab);
+  state.activeTab = name;
+}
+
+function goBack() {
+  const prev = state.history.pop() || 'home';
+  const cur = document.getElementById(screenMap['detail']);
+  if (cur) cur.classList.remove('active');
+  state.activeTab = 'detail';
+  navigate(prev);
+}
+
+function openDetail(key) {
+  const d = places[key] || places.ruta;
+  document.getElementById('detailImg').src = d.img;
+  document.getElementById('detailCat').textContent  = d.cat;
+  document.getElementById('detailTitle').textContent = d.title;
+  document.getElementById('detailContact').textContent = d.contact;
+  document.getElementById('detailAddr').textContent   = d.addr;
+  document.getElementById('detailDesc').textContent   = d.desc;
+  document.getElementById('detailFavBtn').textContent = '🤍';
+  state.rating = 0;
+  document.querySelectorAll('#rStarsRow .r-star').forEach(s => { s.textContent='☆'; s.classList.remove('lit'); });
+  document.getElementById('reviewText').value = '';
+  navigate('detail');
+}
+
+function setActiveTab(name) {
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  const el = document.getElementById(tabMap[name]);
+  if (el) el.classList.add('active');
+}
+
+function updateStatusBar(type) {
+  const sb = document.getElementById('statusBar');
+  sb.className = 'status-bar';
+  if (type === 'hero' || type === 'trans') sb.classList.add('status-bar--hero');
+  if (type === 'light') sb.classList.add('status-bar--light');
+}
+
+/* ----------------------------------------------------------------
+   ONBOARDING
+   ---------------------------------------------------------------- */
+const obSteps = ['ob-splash','ob-slides','ob-profile','ob-permisos','ob-gamif'];
+
+// Splash: auto-advance after 2.2s OR on tap
+const splashEl = document.getElementById('ob-splash');
+let splashTimer = setTimeout(() => obNext(1), 2500);
+let _sr = false; setTimeout(function(){ _sr = true; }, 800);
+splashEl.addEventListener('click', function(){ if(!_sr)return; clearTimeout(splashTimer); obNext(1); });
+
+function obNext(to) {
+  const cur = document.querySelector('.ob-step.ob-active');
+  if (cur) {
+    cur.classList.add('ob-leaving');
+    setTimeout(() => { cur.classList.remove('ob-active','ob-leaving'); }, 320);
+  }
+  const next = document.getElementById(obSteps[to]);
+  if (next) {
+    setTimeout(() => { next.classList.add('ob-active'); }, 60);
+    state.obStep = to;
+  }
+}
+
+function finishOnboarding() {
+  const overlay = document.getElementById('ob-overlay');
+  overlay.style.opacity = '0';
+  overlay.style.transition = 'opacity 400ms ease';
+  setTimeout(() => overlay.classList.add('gone'), 420);
+  syncProfile();
+  // Update greeting based on profile
+  const sub = document.getElementById('homeGreetSub');
+  if (sub) sub.textContent = state.userProfile === 'local' ? 'Local · Ciudad Bolívar' : 'Visitante · Ciudad Bolívar';
+}
+
+// Slide navigation
+let curSlide = 0;
+function slideNav(dir) {
+  if (dir < 0 && curSlide === 0) { return; }
+  if (dir > 0 && curSlide === 2) { obNext(2); return; }
+  curSlide = Math.max(0, Math.min(2, curSlide + dir));
+  document.getElementById('slidesTrack').style.transform = `translateX(-${curSlide * (100/3)}%)`;
+  document.querySelectorAll('.s-dot').forEach(function(d,i){ d.classList.toggle('active', i===curSlide); });
+  document.getElementById('slidePrev').classList.toggle('ob-hidden', curSlide === 0);
+  var nextBtn = document.getElementById('slideNext');
+  nextBtn.classList.toggle('last-slide', curSlide === 2);
+  nextBtn.innerHTML = curSlide === 2
+    ? '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
+    : '<svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>';
+}
+
+// Profile selection
+function selectProfile(type) {
+  state.userProfile = type;
+  ['visitante','local'].forEach(t => {
+    const card = document.getElementById('card' + t.charAt(0).toUpperCase() + t.slice(1));
+    if (card) card.classList.toggle('selected', t === type);
+  });
+}
+
+/* ----------------------------------------------------------------
+   DARK MODE
+   ---------------------------------------------------------------- */
+const dmBtn = document.getElementById('dmBtn');
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) applyDark(true);
+dmBtn.addEventListener('click', () => applyDark(!state.dark));
+
+function applyDark(on) {
+  state.dark = on;
+  document.documentElement.dataset.theme = on ? 'dark' : 'light';
+  dmBtn.textContent = on ? '☀️' : '🌙';
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', on ? '#080A18' : '#0019BC');
+}
+
+/* ----------------------------------------------------------------
+   TOAST
+   ---------------------------------------------------------------- */
+function toast(msg, pts, icon) {
+  if (pts > 0) { state.pts += pts; syncProfile(); }
+  document.getElementById('toastIcon').textContent = icon || '⭐';
+  document.getElementById('toastText').textContent = msg;
+  document.getElementById('toastPts').textContent  = pts > 0 ? `+${pts} pts` : '';
+  const el = document.getElementById('toast');
+  el.classList.add('visible');
+  clearTimeout(state.toastTimer);
+  state.toastTimer = setTimeout(() => el.classList.remove('visible'), 2800);
+}
+
+/* ----------------------------------------------------------------
+   FAV TOGGLE
+   ---------------------------------------------------------------- */
+function toggleFav(btn) {
+  const was = btn.textContent === '❤️';
+  btn.textContent = was ? '🤍' : '❤️';
+  if (!was) { state.saved++; toast('Guardado en favoritos', 5, '❤️'); }
+  else { state.saved = Math.max(0, state.saved - 1); }
+  syncProfile();
+}
+
+/* ----------------------------------------------------------------
+   CHIP / FILTER
+   ---------------------------------------------------------------- */
+function selectChip(el) {
+  el.closest('.hero-chips').querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+function selectEcat(el, cat) {
+  el.closest('.explore-cats').querySelectorAll('.ecat').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const meta = document.getElementById('exploreMeta');
+  if (meta) meta.textContent = `${cat} — resultados`;
+}
+function selectEvFilter(el) {
+  el.closest('.eventos-filter-row').querySelectorAll('.ev-filter').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ----------------------------------------------------------------
+   MAP / LIST VIEW TOGGLE
+   ---------------------------------------------------------------- */
+function setView(v) {
+  document.getElementById('mapView').style.display  = v === 'map'  ? 'block' : 'none';
+  document.getElementById('listView').style.display = v === 'list' ? 'block' : 'none';
+  document.getElementById('viewMap').classList.toggle('active', v === 'map');
+  document.getElementById('viewList').classList.toggle('active', v === 'list');
+}
+
+/* ----------------------------------------------------------------
+   EVENTOS — attend
+   ---------------------------------------------------------------- */
+function attendEvent(btn) {
+  if (btn.classList.contains('done')) return;
+  btn.classList.add('done');
+  btn.textContent = 'Confirmado ✓';
+  state.pts += 50;
+  syncProfile();
+  toast('¡Asistencia confirmada!', 50, '🎉');
+}
+
+/* ----------------------------------------------------------------
+   FAVORITOS TAB SWITCHING
+   ---------------------------------------------------------------- */
+function setFavTab(key) {
+  ['lugares','rutas','fevents'].forEach(k => {
+    document.getElementById('fav-section-' + k).classList.toggle('active', k === key);
+  });
+  document.getElementById('favTabLugares').classList.toggle('active', key === 'lugares');
+  document.getElementById('favTabRutas').classList.toggle('active', key === 'rutas');
+  document.getElementById('favTabEventos').classList.toggle('active', key === 'fevents');
+}
+
+/* ----------------------------------------------------------------
+   REVIEW / RATING
+   ---------------------------------------------------------------- */
+function setRating(n) {
+  state.rating = state.rating === n ? 0 : n;
+  document.querySelectorAll('#rStarsRow .r-star').forEach((s, i) => {
+    const on = i < state.rating;
+    s.textContent = on ? '★' : '☆';
+    s.classList.toggle('lit', on);
+  });
+  if (state.rating > 0) toast('Valoración registrada', 10, '★');
+}
+function submitReview() {
+  const text = document.getElementById('reviewText').value.trim();
+  if (state.rating === 0) { toast('Selecciona una puntuación primero', 0, '⚠️'); return; }
+  if (text.length < 30)   { toast(`Escribe al menos 30 caracteres (${text.length}/30)`, 0, '✍️'); return; }
+  state.reviews++;
+  state.rating = 0;
+  document.querySelectorAll('#rStarsRow .r-star').forEach(s => { s.textContent='☆'; s.classList.remove('lit'); });
+  document.getElementById('reviewText').value = '';
+  toast('¡Reseña publicada!', 25, '✅');
+  syncProfile();
+}
+
+/* ----------------------------------------------------------------
+   REDEEM REWARD
+   ---------------------------------------------------------------- */
+function redeemReward(el, cost) {
+  if (state.pts < cost) { toast('No tienes suficientes puntos', 0, '💰'); return; }
+  state.pts -= cost;
+  el.classList.add('disabled');
+  el.onclick = null;
+  const okEl = el.querySelector('.rew-ok, .rew-off');
+  if (okEl) { okEl.textContent = 'Canjeado ✓'; okEl.className = 'rew-ok'; }
+  toast('¡Recompensa canjeada! Muéstrala en el local', 0, '🎁');
+  syncProfile();
+}
+
+/* ----------------------------------------------------------------
+   PROFILE SYNC
+   ---------------------------------------------------------------- */
+const LEVELS = [
+  { name:'Curioso',    min:0    },
+  { name:'Explorador', min:250  },
+  { name:'Guardián',   min:750  },
+  { name:'Embajador',  min:1500 },
+];
+function syncProfile() {
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('ptsVal', state.pts);
+  set('revVal', state.reviews);
+  set('savVal', state.saved);
+  set('heroPts', state.pts);
+
+  let lv = 0;
+  LEVELS.forEach((l,i) => { if (state.pts >= l.min) lv = i; });
+  const cur  = LEVELS[lv];
+  const next = LEVELS[Math.min(lv+1,3)];
+  const pct  = lv === 3 ? 100 : Math.round((state.pts - cur.min) / (next.min - cur.min) * 100);
+  const xpPct = lv === 3 ? 100 : Math.round((state.pts - cur.min) / (next.min - cur.min) * 100);
+
+  const fill    = document.getElementById('xpFill');
+  const heroFill= document.getElementById('heroXpFill');
+  if (fill)     fill.style.width = pct + '%';
+  if (heroFill) heroFill.style.width = xpPct + '%';
+
+  set('xpCur', `${state.pts} pts`);
+  set('levelNum', lv + 1);
+  set('levelCardSub', `Nivel ${lv+1} · ${cur.name}`);
+
+  const hint = document.getElementById('xpHint');
+  const nxtEl= document.getElementById('xpNxt');
+  if (lv < 3) {
+    const rem = next.min - state.pts;
+    if (hint) hint.textContent = `Faltan ${rem} pts para ser ${next.name}`;
+    if (nxtEl) nxtEl.textContent = `${next.min} → ${next.name}`;
+  } else {
+    if (hint) hint.textContent = '¡Nivel máximo alcanzado! 🏆';
+    if (nxtEl) nxtEl.textContent = '¡Embajador Supremo!';
+  }
+}
+
+/* ----------------------------------------------------------------
+   RIPPLE EFFECT
+   ---------------------------------------------------------------- */
+document.addEventListener('pointerdown', e => {
+  const el = e.target.closest('.ripple-wrap');
+  if (!el) return;
+  const rect  = el.getBoundingClientRect();
+  const size  = Math.max(rect.width, rect.height) * 2;
+  const x     = e.clientX - rect.left - size / 2;
+  const y     = e.clientY - rect.top  - size / 2;
+  const rip = document.createElement('span');
+  rip.className = 'ripple-circle';
+  rip.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
+  el.appendChild(rip);
+  rip.addEventListener('animationend', () => rip.remove());
+});
+
+/* ----------------------------------------------------------------
+   LIVE CLOCK
+   ---------------------------------------------------------------- */
+function updateClock() {
+  const now = new Date();
+  document.getElementById('sbTime').textContent =
+    String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+}
+updateClock();
+setInterval(updateClock, 15000);
+
+/* ----------------------------------------------------------------
+   INIT
+   ---------------------------------------------------------------- */
+syncProfile();
+</script>
+
+</body>
+</html>
