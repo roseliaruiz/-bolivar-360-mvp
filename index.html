@@ -1340,6 +1340,49 @@ a{color:inherit;text-decoration:none;}
   .dm-btn{top:8px;right:8px;}
 }
 .b360-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Inter',system-ui,sans-serif;font-style:italic;font-size:13px;font-weight:700;color:rgba(255,255,255,0.78);text-align:center;padding:12px;line-height:1.35;text-shadow:0 1px 4px rgba(0,0,0,0.5);pointer-events:none;}
+
+/* ================================================================
+   ONBOARDING — BOTÓN "ENTRAR"
+   ================================================================ */
+.ob-enter-btn {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 14px);
+  right: 14px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px 9px 16px;
+  background: rgba(255,255,255,0.13);
+  border: 1.5px solid rgba(255,255,255,0.30);
+  border-radius: 999px;
+  color: #FFFFFF;
+  font-family: 'Inter',system-ui,sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.15px;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  opacity: 0;
+  pointer-events: none;
+  animation: ob-enter-appear 280ms 1000ms cubic-bezier(0.22,1,0.36,1) forwards;
+  transition: background var(--t-fast), transform var(--t-fast);
+  white-space: nowrap;
+}
+@keyframes ob-enter-appear {
+  from { opacity:0; transform:translateY(-6px); }
+  to   { opacity:1; transform:translateY(0); pointer-events:all; }
+}
+.ob-enter-btn:hover  { background: rgba(255,255,255,0.22); }
+.ob-enter-btn:active { transform: scale(0.94); background: rgba(255,255,255,0.28); }
+.ob-enter-btn svg {
+  width: 13px; height: 13px;
+  stroke: rgba(255,255,255,0.85); fill: none;
+  stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -1358,6 +1401,12 @@ a{color:inherit;text-decoration:none;}
      ONBOARDING OVERLAY
      ================================================================ -->
 <div id="ob-overlay">
+
+  <!-- Botón Entrar — siempre visible durante el onboarding -->
+  <button class="ob-enter-btn ripple-wrap" id="obEnterBtn" onclick="skipOnboarding()" aria-label="Entrar directo al app">
+    Entrar
+    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
 
   <!-- STEP 0: SPLASH -->
   <div class="ob-step ob-active" id="ob-splash">
@@ -2572,7 +2621,7 @@ function updateStatusBar(type) {
    ---------------------------------------------------------------- */
 const obSteps = ['ob-splash','ob-slides','ob-profile','ob-permisos','ob-gamif'];
 
-// Splash: auto-advance after 2.2s OR on tap
+// Splash: auto-advance after 2.5s OR on tap
 const splashEl = document.getElementById('ob-splash');
 let splashTimer = setTimeout(() => obNext(1), 2500);
 let _sr = false; setTimeout(function(){ _sr = true; }, 800);
@@ -2592,14 +2641,24 @@ function obNext(to) {
 }
 
 function finishOnboarding() {
+  localStorage.setItem('b360_ob_done', '1');
+  localStorage.setItem('b360_profile', state.userProfile);
   const overlay = document.getElementById('ob-overlay');
   overlay.style.opacity = '0';
   overlay.style.transition = 'opacity 400ms ease';
   setTimeout(() => overlay.classList.add('gone'), 420);
   syncProfile();
-  // Update greeting based on profile
   const sub = document.getElementById('homeGreetSub');
   if (sub) sub.textContent = state.userProfile === 'local' ? 'Local · Ciudad Bolívar' : 'Visitante · Ciudad Bolívar';
+}
+
+function skipOnboarding() {
+  localStorage.setItem('b360_ob_done', '1');
+  const overlay = document.getElementById('ob-overlay');
+  overlay.style.opacity = '0';
+  overlay.style.transition = 'opacity 200ms ease';
+  setTimeout(() => overlay.classList.add('gone'), 220);
+  syncProfile();
 }
 
 // Slide navigation
